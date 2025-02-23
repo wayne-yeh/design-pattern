@@ -1,1 +1,1 @@
-The project for desing-patern
+The project for design-pattern
