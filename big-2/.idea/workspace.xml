@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0650443-9853-4430-8095-dea716ad95fd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/card/Card.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/card/pattern/CardPattern.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/deck/Deck.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/game/Game.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/player/Player.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/player/PlayerHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/test/GameTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../big2/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../big2/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/deck/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/deck/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/game/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/../big2/src/main/java/com/example/big2/player/Player.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,40 +23,40 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Justin-way"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Justin-way&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Justin-way/design-pattern.git",
-    "accountId": "5f61b1d3-661b-48f9-9e1b-f29d832511b2"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Justin-way/design-pattern.git&quot;,
+    &quot;accountId&quot;: &quot;5f61b1d3-661b-48f9-9e1b-f29d832511b2&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2tQfiw5MVvXv8QUhCOiqJfCWE38" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Big2Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="big-2.main" />

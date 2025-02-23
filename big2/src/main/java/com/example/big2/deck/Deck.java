@@ -41,10 +41,14 @@ public class Deck {
 
     private void printCards() {
         System.out.println("test");
-        for (int i = cards.size() -1; i >= 0; i--) {
+        for (int i = 0; i <= cards.size() -1; i++) {
             System.out.printf("%s[%s] ", cards.get(i).getSuit(), cards.get(i).getRank());
         }
         System.out.println();
 
+    }
+
+    public Card drawCard() {
+        return cards.remove(cards.size() - 1);
     }
 }

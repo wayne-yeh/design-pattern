@@ -3,13 +3,14 @@ package com.example.big2.player;
 import com.example.big2.card.Card;
 import com.example.big2.card.pattern.CardPattern;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends PlayerHandler{
 
     private String name;
     private int index;
-    private List<Card> handCards;
+    private List<Card> handCards = new ArrayList<>();
     public Boolean isTopPlayer = false;
 
     public String getName() {
