@@ -5,26 +5,19 @@ import com.example.big2.card.pattern.CardPattern;
 import com.example.big2.deck.Deck;
 import com.example.big2.player.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
 
-    private CardPattern topPlay;
+    public Player topPlayer = null;
+    private Card topPlay;
     private int round = 0;
     int numberOfPlayers = 4;
     List<Player> players = new ArrayList<>();
-
+    List<Player> indexPlayers = new ArrayList<>();
+    int passCount;
     private final Deck deck = new Deck();
 
-    public CardPattern getTopPlay() {
-        return topPlay;
-    }
-
-    public void setTopPlay(CardPattern topPlay) {
-        this.topPlay = topPlay;
-    }
 
     public int getRound() {
         return round;
@@ -39,24 +32,77 @@ public class Game {
         enterPlayersName();
         playersGetCards();
         decideTopPlay();
+        playersExecuteAction();
         
+    }
+
+    private void playersExecuteAction() {
+
+        Scanner scanner = new Scanner(System.in);
+        int passCount = 0;
+        Map<Card, Player> cardPlayerMap = new HashMap<>();
+        for (int i = 0; i < indexPlayers.size(); i++) {
+            System.out.print("passsss"+passCount);
+            Player player = indexPlayers.get(i);
+            List<Card> HandCards = player.getHandCards();
+            System.out.println("Turn player " + player.getName() +" player index " + i);
+            System.out.println("Player name " + player.getName() +" would like to do '-1' or 'choose index card'");
+            for (int index = 0; index < HandCards.size(); index++) {
+                System.out.print(index+"\t\t");
+            }
+            System.out.println();
+            for (Card handCard : HandCards) {
+                System.out.printf("%s[%s]\t", handCard.getSuit(), handCard.getRank());
+            }
+
+            System.out.println();
+            int input = Integer.parseInt(scanner.nextLine());
+            if (input == -1) {
+                System.out.printf("player %s give up\n", player.getName());
+                System.out.println("-----------------------------");
+                passCount++;
+                System.out.printf("passconunt is "+passCount);
+                continue;
+            } else {
+                Card chooseCard = HandCards.remove(input);
+                cardPlayerMap.put(chooseCard,player);
+                topPlay = chooseCard;
+                System.out.printf("player %s choose card is %s[%s]\n", player.getName(), chooseCard.getSuit(), chooseCard.getRank());
+                System.out.println("-----------------------------");
+            }
+            System.out.print("eeeeeeeee");
+            if (passCount == 2) {
+                System.out.printf("top player is %s",cardPlayerMap.get(topPlay));
+                cardPlayerMap.clear();
+            }
+
+        }
+
     }
 
     private void decideTopPlay() {
 
-        for (Player player : players) {
-
+        outerLoop:
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
             for (Card card : player.getHandCards()) {
-                if (card.getSuit().equals("S") && card.getRank().equals("3")) {
+                if (card.getSuit().equals("C") && card.getRank().equals("3")) {
                     System.out.printf("Top player is %s", player.getName());
                     System.out.println();
                     player.setTopPlayer(true);
-                    player.setIndex(0);
-                    break;
+                    indexPlayers.add(players.get((i+0)%4));
+                    indexPlayers.add(players.get((i+1)%4));
+                    indexPlayers.add(players.get((i+2)%4));
+                    indexPlayers.add(players.get((i+3)%4));
+                    break outerLoop;
                 }
             }
             System.out.println();
         }
+
+       for (int i = 0; i < indexPlayers.size(); i++) {
+            System.out.println("player name " + indexPlayers.get(i).getName() +"player index " + i);
+       }
     }
 
     private void playersGetCards() {
@@ -85,7 +131,7 @@ public class Game {
         for (Player player : players) {
             System.out.print("Enter name for player " + j + ": ");
             String name = scanner.nextLine();
-            players.get(j-1).setName(name);  // 設定玩家名稱，注意索引是從 0 開始的
+            players.get(j-1).setName(name);
             System.out.println("Player " + j + " name set to: " + name);
             j++;
         }
