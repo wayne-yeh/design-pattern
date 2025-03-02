@@ -5,7 +5,7 @@ import com.example.big2.card.Card;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player extends PlayerHandler{
+public class Player{
 
     private String name;
     private int index;
@@ -36,11 +36,13 @@ public class Player extends PlayerHandler{
         this.index = index;
     }
 
-    public Boolean getC3Player() {
+    public Boolean hasC3() {
         return hasC3;
     }
 
     public void setC3Player(Boolean c3Player) {
         hasC3 = c3Player;
     }
+
+
 }
