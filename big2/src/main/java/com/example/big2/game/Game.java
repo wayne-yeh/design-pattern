@@ -84,13 +84,13 @@ public class Game {
                     Card chooseCard = handCards.remove(input);
                     cardPlayerMap.put(chooseCard, player);
                     topPlay = chooseCard;
-                    lastPlayedPlayer = player; // **記錄最後一位成功出牌的玩家**
+                    lastPlayedPlayer = player;
                     System.out.printf("player %s choose card is %s[%s]\n", player.getName(), chooseCard.getSuit(), chooseCard.getRank());
                     System.out.println("-----------------------------");
-                    passCount = 0; // **有人出牌時，重置 passCount**
+                    passCount = 0;
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
-                    i--; // **讓玩家重新輸入**
+                    i--;
                 }
             }
         }
