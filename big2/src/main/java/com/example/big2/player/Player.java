@@ -1,7 +1,6 @@
 package com.example.big2.player;
 
 import com.example.big2.card.Card;
-import com.example.big2.card.pattern.CardPattern;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,7 @@ public class Player extends PlayerHandler{
     private String name;
     private int index;
     private List<Card> handCards = new ArrayList<>();
-    public Boolean isTopPlayer = false;
+    public Boolean hasC3 = false;
 
     public String getName() {
         return name;
@@ -38,10 +37,10 @@ public class Player extends PlayerHandler{
     }
 
     public Boolean getTopPlayer() {
-        return isTopPlayer;
+        return hasC3;
     }
 
     public void setTopPlayer(Boolean topPlayer) {
-        isTopPlayer = topPlayer;
+        hasC3 = topPlayer;
     }
 }

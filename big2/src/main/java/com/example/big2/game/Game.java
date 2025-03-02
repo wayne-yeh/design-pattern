@@ -9,7 +9,6 @@ import java.util.*;
 
 public class Game {
 
-    public Player topPlayer = null;
     private Card topPlay;
     private int round = 0;
     private int passCount = 0;
@@ -17,6 +16,7 @@ public class Game {
     List<Player> players = new ArrayList<>();
     List<Player> indexPlayers = new ArrayList<>();
     private final Deck deck = new Deck();
+    Player lastPlayedPlayer = null;
 
 
     public int getRound() {
@@ -39,9 +39,11 @@ public class Game {
     private void playersExecuteAction() {
         Scanner scanner = new Scanner(System.in);
         Map<Card, Player> cardPlayerMap = new HashMap<>();
-        Player lastPlayedPlayer = null; // **記錄最後一次出牌的玩家**
 
         for (int i = 0; i < indexPlayers.size(); i++) {
+            if (lastPlayedPlayer != null) {
+                System.out.println("Last player is " +lastPlayedPlayer.getName());
+            }
             System.out.println("passCount: " + passCount);
             Player player = indexPlayers.get(i);
             List<Card> handCards = player.getHandCards();
@@ -74,12 +76,6 @@ public class Game {
                     passCount = 0;
                     topPlay = null;
                     cardPlayerMap.clear();
-
-                    // **讓最後一次出牌的玩家成為新的回合開始者**
-                    if (lastPlayedPlayer != null) {
-                        System.out.println("Winner is" +lastPlayedPlayer.getName());
-                        i = indexPlayers.indexOf(lastPlayedPlayer) - 1; // **確保下一回合從 lastPlayedPlayer 開始**
-                    }
                 }
             } else {
                 Card inputCard = handCards.get(input);
