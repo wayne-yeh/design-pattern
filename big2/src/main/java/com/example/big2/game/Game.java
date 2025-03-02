@@ -1,7 +1,6 @@
 package com.example.big2.game;
 
 import com.example.big2.card.Card;
-import com.example.big2.card.pattern.CardPattern;
 import com.example.big2.deck.Deck;
 import com.example.big2.player.Player;
 
@@ -38,7 +37,6 @@ public class Game {
 
     private void playersExecuteAction() {
         Scanner scanner = new Scanner(System.in);
-        Map<Card, Player> cardPlayerMap = new HashMap<>();
 
         for (int i = 0; i < indexPlayers.size(); i++) {
             if (lastPlayedPlayer != null) {
@@ -63,9 +61,9 @@ public class Game {
             }
             System.out.println();
 
-            int input = Integer.parseInt(scanner.nextLine());
+            int cardIndex = Integer.parseInt(scanner.nextLine());
 
-            if (input == -1) {
+            if (cardIndex == -1) {
                 System.out.printf("player %s give up\n", player.getName());
                 System.out.println("-----------------------------");
                 passCount++;
@@ -75,23 +73,35 @@ public class Game {
 
                     passCount = 0;
                     topPlay = null;
-                    cardPlayerMap.clear();
                 }
             } else {
-                Card inputCard = handCards.get(input);
+                Card inputCard = handCards.get(cardIndex);
                 try {
+                    checkPlayerHasC3(inputCard, player);
                     checkResonalbe(inputCard, topPlay);
-                    Card chooseCard = handCards.remove(input);
-                    cardPlayerMap.put(chooseCard, player);
-                    topPlay = chooseCard;
-                    lastPlayedPlayer = player;
-                    System.out.printf("player %s choose card is %s[%s]\n", player.getName(), chooseCard.getSuit(), chooseCard.getRank());
-                    System.out.println("-----------------------------");
-                    passCount = 0;
+                    chooseCard(cardIndex, player);
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
                     i--;
                 }
+            }
+        }
+    }
+
+    private void chooseCard(int cardIndex, Player player) {
+        Card chooseCard = player.getHandCards().remove(cardIndex);
+        topPlay = chooseCard;
+        lastPlayedPlayer = player;
+        player.setC3Player(false);
+        System.out.printf("player %s choose card is %s[%s]\n", player.getName(), chooseCard.getSuit(), chooseCard.getRank());
+        System.out.println("-----------------------------");
+        passCount = 0;
+    }
+
+    private void checkPlayerHasC3(Card inputCard, Player player) {
+        if (player.hasC3) {
+            if (!inputCard.getRank().equals("3") || !inputCard.getSuit().equals("C")) {
+                throw new IllegalArgumentException("Player " + player.getName()+" has C[3], need to throw C[3] first");
             }
         }
     }
@@ -151,7 +161,7 @@ public class Game {
                 if (card.getSuit().equals("C") && card.getRank().equals("3")) {
                     System.out.printf("Top player is %s", player.getName());
                     System.out.println();
-                    player.setTopPlayer(true);
+                    player.setC3Player(true);
                     indexPlayers.add(players.get((i+0)%4));
                     indexPlayers.add(players.get((i+1)%4));
                     indexPlayers.add(players.get((i+2)%4));

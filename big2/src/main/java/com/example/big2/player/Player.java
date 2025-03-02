@@ -36,11 +36,11 @@ public class Player extends PlayerHandler{
         this.index = index;
     }
 
-    public Boolean getTopPlayer() {
+    public Boolean getC3Player() {
         return hasC3;
     }
 
-    public void setTopPlayer(Boolean topPlayer) {
-        hasC3 = topPlayer;
+    public void setC3Player(Boolean c3Player) {
+        hasC3 = c3Player;
     }
 }
