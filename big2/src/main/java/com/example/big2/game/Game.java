@@ -162,4 +162,8 @@ public class Game {
     public void resetPassCount() {
         Game.passCount = 0;
     }
+
+    public Player getLastPlayedPlayer(){
+        return lastPlayedPlayer;
+    }
 }

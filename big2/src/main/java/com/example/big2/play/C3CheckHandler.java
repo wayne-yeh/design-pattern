@@ -17,7 +17,9 @@ public class C3CheckHandler extends PlayHandler {
             throw new IllegalArgumentException("Player " + player.getName() + " has C[3], can not give up");
         } else if (player.hasC3() && !(inputCard.getRank().equals("3") && inputCard.getSuit().equals("C"))) {
             throw new IllegalArgumentException("Player " + player.getName() + " has C[3], must play it first.");
-        }  else if (next != null) {
+        } else if (game.getLastPlayedPlayer() != null && game.getLastPlayedPlayer().equals(player)) {
+            throw new IllegalArgumentException("Player " + player.getName() + " is the first player can not give up");
+        } else if (next != null) {
             next.handle(player, inputCard, game);
         }
     }
