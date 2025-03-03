@@ -13,9 +13,11 @@ public class C3CheckHandler extends PlayHandler {
 
     @Override
     public void handle(Player player, Card inputCard, Game game) {
-        if (player.hasC3() && !(inputCard.getRank().equals("3") && inputCard.getSuit().equals("C"))) {
+        if (player.hasC3() && inputCard == null) {
+            throw new IllegalArgumentException("Player " + player.getName() + " has C[3], can not give up");
+        } else if (player.hasC3() && !(inputCard.getRank().equals("3") && inputCard.getSuit().equals("C"))) {
             throw new IllegalArgumentException("Player " + player.getName() + " has C[3], must play it first.");
-        } else if (next != null) {
+        }  else if (next != null) {
             next.handle(player, inputCard, game);
         }
     }

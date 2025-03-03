@@ -16,6 +16,13 @@ public class ValidationHandler extends PlayHandler {
 
     @Override
     public void handle(Player player, Card inputCard, Game game) {
+        if (inputCard == null) {
+            if (next != null) {
+                next.handle(player, null, game);
+            }
+            return;
+        }
+
         Card topPlay = game.getTopPlay();
         if (topPlay != null) {
             int inputRank = getRankValue(inputCard.getRank());
@@ -24,8 +31,10 @@ public class ValidationHandler extends PlayHandler {
             if (inputRank < topRank || (inputRank == topRank && compareSuit(inputCard.getSuit(), topPlay.getSuit()) <= 0)) {
                 throw new IllegalArgumentException("The card you played is too small, please choose a bigger card.");
             }
-        } else if (next != null) {
-            next.handle(player, inputCard,game);
+        }
+
+        if (next != null) {
+            next.handle(player, inputCard, game);
         }
     }
 

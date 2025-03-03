@@ -145,7 +145,6 @@ public class Game {
 
     public void incrementPassCount() {
         Game.passCount++;
-        System.out.println("Pass count incremented: " + Game.passCount);
     }
 
     public Card getTopPlay() {
