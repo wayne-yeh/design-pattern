@@ -1,6 +1,10 @@
 package com.example.big2.card.pattern;
 
-public interface CardPattern {
+import com.example.big2.card.Card;
 
-    CardPattern identifyCardPattern();
+import java.util.List;
+
+public interface CardPattern {
+    boolean isValid(List<Card> cards);
+    int compare(List<Card> cards1, List<Card> cards2);
 }

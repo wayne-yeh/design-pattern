@@ -4,6 +4,8 @@ import com.example.big2.card.Card;
 import com.example.big2.game.Game;
 import com.example.big2.player.Player;
 
+import java.util.List;
+
 public class PassHandler extends PlayHandler {
 
 
@@ -12,13 +14,13 @@ public class PassHandler extends PlayHandler {
     }
 
     @Override
-    public void handle(Player player, Card inputCard, Game game) {
-        if (inputCard == null) {
+    public void handle(Player player,List<Card> inputCards, Game game) {
+        if (inputCards == null) {
             System.out.printf("Player %s gives up this round.\n", player.getName());
             game.incrementPassCount();
             return;
         } else if (next != null) {
-            next.handle(player, inputCard, game);
+            next.handle(player, inputCards, game);
         }
     }
 }

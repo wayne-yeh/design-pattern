@@ -30,7 +30,7 @@ public class Game {
     }
 
     public void start() {
-        clientPlayerHandler = new C3CheckHandler(new PassHandler(new ValidationHandler(new PlayCardHandler(null))));
+        clientPlayerHandler = new CheckHandler(new PassHandler(new ValidationHandler(new PlayCardHandler(null))));
 
         deck.shuffle();
         enterPlayersName();
@@ -55,7 +55,6 @@ public class Game {
 
                 if (topPlay != null) {
                     System.out.printf("Player name %s would like to do '-1' or choose index card higher than %s[%s] \n", player.getName(), topPlay.getSuit(), topPlay.getRank());
-
                 }
 
                 for (int index = 0; index < handCards.size(); index++) {
@@ -68,19 +67,30 @@ public class Game {
                 }
                 System.out.println();
 
-                int cardIndex = Integer.parseInt(scanner.nextLine());
-                Card inputCard = (cardIndex == -1) ? null : handCards.get(cardIndex);
+                String input = scanner.nextLine();
 
-                try {
-                    clientPlayerHandler.handle(player, inputCard, this);
-                    break;
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-
+                if (input.equals("-1")) {
+                    try {
+                        clientPlayerHandler.handle(player, null, this);
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                } else {
+                    try {
+                        List<Card> selectedCards = new ArrayList<>();
+                        String[] indexes = input.split(",");
+                        for (String index : indexes) {
+                            int cardIndex = Integer.parseInt(index.trim());
+                            selectedCards.add(handCards.get(cardIndex));
+                        }
+                        clientPlayerHandler.handle(player, selectedCards, this);
+                        break;
+                    } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+                        System.out.println("Invalid input: " + e.getMessage());
+                    }
                 }
             }
-
-
         }
     }
 

@@ -4,6 +4,8 @@ import com.example.big2.card.Card;
 import com.example.big2.game.Game;
 import com.example.big2.player.Player;
 
+import java.util.List;
+
 public abstract class PlayHandler {
 
     protected PlayHandler next;
@@ -12,9 +14,9 @@ public abstract class PlayHandler {
         this.next = nextHandler;
     }
 
-    public void handle(Player player, Card inputCard, Game game) {
+    public void handle(Player player, List<Card> inputCards, Game game) {
         if (next != null) {
-            next.handle(player, inputCard, game);
+            next.handle(player, inputCards, game);
         }
     }
 }
