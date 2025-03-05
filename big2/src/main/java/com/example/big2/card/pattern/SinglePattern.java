@@ -4,7 +4,7 @@ import com.example.big2.card.Card;
 
 import java.util.List;
 
-class SinglePattern implements CardPattern {
+public class SinglePattern implements CardPattern {
 
     @Override
     public boolean isValid(List<Card> cards) {

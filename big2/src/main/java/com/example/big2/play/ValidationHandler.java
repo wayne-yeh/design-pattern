@@ -1,6 +1,8 @@
 package com.example.big2.play;
 
 import com.example.big2.card.Card;
+import com.example.big2.card.factory.CardPatternFactory;
+import com.example.big2.card.pattern.CardPattern;
 import com.example.big2.game.Game;
 import com.example.big2.play.PlayHandler;
 import com.example.big2.player.Player;
@@ -9,7 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-public class ValidationHandler extends PlayHandler {
+public class ValidationHandler extends PlayHandler{
+
 
     public ValidationHandler(PlayHandler next) {
         super(next);
@@ -23,15 +26,21 @@ public class ValidationHandler extends PlayHandler {
             }
             return;
         }
-
+        CardPattern cardPattern = CardPatternFactory.getPattern(inputCards);
         List<Card> topPlay = game.getTopPlay();
 
         if (!topPlay.isEmpty()) {
 
             if (inputCards.size() == 1 ) {
-                validateSingle(inputCards.get(0), topPlay.get(0));
+                int test = cardPattern.compare(inputCards, topPlay);
+                if (test == -1) {
+                    throw new IllegalArgumentException("The card you played is too small.");
+                }
             } else if (inputCards.size() == 2) {
-                validatePair(inputCards);
+                int test = cardPattern.compare(inputCards, topPlay);
+                if (test == -1) {
+                    throw new IllegalArgumentException("The card you played is too small.");
+                }
             } else if (inputCards.size() == 5) {
                 validateFullHouse(inputCards);
             }
