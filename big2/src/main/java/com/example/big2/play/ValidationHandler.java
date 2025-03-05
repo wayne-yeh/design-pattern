@@ -24,15 +24,20 @@ public class ValidationHandler extends PlayHandler {
             return;
         }
 
-        Card topPlay = game.getTopPlay();
+        List<Card> topPlay = game.getTopPlay();
 
-        if (inputCards.size() == 1) {
-            validateSingle(inputCards.get(0), topPlay);
-        } else if (inputCards.size() == 2) {
-            validatePair(inputCards);
-        } else if (inputCards.size() == 5) {
-            validateFullHouse(inputCards);
+        if (!topPlay.isEmpty()) {
+
+            if (inputCards.size() == 1 ) {
+                validateSingle(inputCards.get(0), topPlay.get(0));
+            } else if (inputCards.size() == 2) {
+                validatePair(inputCards);
+            } else if (inputCards.size() == 5) {
+                validateFullHouse(inputCards);
+            }
         }
+
+
 
         if (next != null) {
             next.handle(player, inputCards, game);

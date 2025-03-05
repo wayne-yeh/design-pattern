@@ -3,14 +3,13 @@ package com.example.big2.game;
 import com.example.big2.card.Card;
 import com.example.big2.deck.Deck;
 import com.example.big2.play.*;
-
 import com.example.big2.player.Player;
 
 import java.util.*;
 
 public class Game {
 
-    private Card topPlay;
+    private List<Card> topPlay = new ArrayList<>();
     private int round = 0;
     private static int passCount = 0;
     int numberOfPlayers = 4;
@@ -36,8 +35,7 @@ public class Game {
         enterPlayersName();
         playersGetCards();
         decideTopPlay();
-        while (true) {playersExecuteAction();}
-        
+        while (true) { playersExecuteAction(); }
     }
 
     private void playersExecuteAction() {
@@ -53,8 +51,9 @@ public class Game {
                 List<Card> handCards = player.getHandCards();
                 System.out.println("Turn player " + player.getName() + " player index " + round);
 
-                if (topPlay != null) {
-                    System.out.printf("Player name %s would like to do '-1' or choose index card higher than %s[%s] \n", player.getName(), topPlay.getSuit(), topPlay.getRank());
+                if (!topPlay.isEmpty()) {
+                    System.out.printf("Player name %s would like to do '-1' or choose index card higher than %s \n",
+                            player.getName(), topPlay.stream().map(Card::toString).toList());
                 }
 
                 for (int index = 0; index < handCards.size(); index++) {
@@ -79,14 +78,14 @@ public class Game {
                 } else {
                     try {
                         List<Card> selectedCards = new ArrayList<>();
-                        String[] indexes = input.split(",");
+                        String[] indexes = input.split(" ");
                         for (String index : indexes) {
                             int cardIndex = Integer.parseInt(index.trim());
                             selectedCards.add(handCards.get(cardIndex));
                         }
                         clientPlayerHandler.handle(player, selectedCards, this);
                         break;
-                    } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+                    } catch (IllegalArgumentException e) {
                         System.out.println("Invalid input: " + e.getMessage());
                     }
                 }
@@ -94,9 +93,7 @@ public class Game {
         }
     }
 
-
     private void decideTopPlay() {
-
         outerLoop:
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
@@ -105,24 +102,24 @@ public class Game {
                     System.out.printf("Top player is %s", player.getName());
                     System.out.println();
                     player.setC3Player(true);
-                    indexPlayers.add(players.get((i+0)%4));
-                    indexPlayers.add(players.get((i+1)%4));
-                    indexPlayers.add(players.get((i+2)%4));
-                    indexPlayers.add(players.get((i+3)%4));
+                    indexPlayers.add(players.get((i + 0) % 4));
+                    indexPlayers.add(players.get((i + 1) % 4));
+                    indexPlayers.add(players.get((i + 2) % 4));
+                    indexPlayers.add(players.get((i + 3) % 4));
                     break outerLoop;
                 }
             }
             System.out.println();
         }
 
-       for (int i = 0; i < indexPlayers.size(); i++) {
-            System.out.println("player name " + indexPlayers.get(i).getName() +" player index " + i);
-       }
+        for (int i = 0; i < indexPlayers.size(); i++) {
+            System.out.println("player name " + indexPlayers.get(i).getName() + " player index " + i);
+        }
     }
 
     private void playersGetCards() {
         int i = 0;
-        while (!deck.getCards().isEmpty()){
+        while (!deck.getCards().isEmpty()) {
             List<Card> currentCards = players.get(i % 4).getHandCards();
             currentCards.add(deck.drawCard());
             i++;
@@ -131,7 +128,7 @@ public class Game {
         for (Player player : players) {
             System.out.printf("%s: ", player.getName());
             for (Card card : player.getHandCards()) {
-                System.out.printf("%s%s ", card.getSuit(),card.getRank());
+                System.out.printf("%s%s ", card.getSuit(), card.getRank());
             }
             System.out.println();
         }
@@ -146,22 +143,21 @@ public class Game {
         for (Player player : players) {
             System.out.print("Enter name for player " + j + ": ");
             String name = scanner.nextLine();
-            players.get(j-1).setName(name);
+            players.get(j - 1).setName(name);
             System.out.println("Player " + j + " name set to: " + name);
             j++;
         }
-
     }
 
     public void incrementPassCount() {
         Game.passCount++;
     }
 
-    public Card getTopPlay() {
+    public List<Card> getTopPlay() {
         return topPlay;
     }
 
-    public void setTopPlay(Card topPlay) {
+    public void setTopPlay(List<Card> topPlay) {
         this.topPlay = topPlay;
     }
 
@@ -173,7 +169,7 @@ public class Game {
         Game.passCount = 0;
     }
 
-    public Player getLastPlayedPlayer(){
+    public Player getLastPlayedPlayer() {
         return lastPlayedPlayer;
     }
 }

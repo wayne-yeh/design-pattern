@@ -17,10 +17,10 @@ public class PlayCardHandler extends PlayHandler {
         public void handle(Player player, List<Card> inputCards, Game game) {
             if (inputCards != null && !inputCards.isEmpty()) {
                 player.getHandCards().removeAll(inputCards);
-                game.setTopPlay(inputCards.get(0));
+                game.setTopPlay(inputCards);
                 game.setLastPlayedPlayer(player);
                 game.resetPassCount();
-                System.out.printf("Player %s plays %s\n", player.getName(), inputCards);
+                System.out.printf("Player %s plays %s\n", player.getName(), inputCards.stream().map(Card::toString).toList());
             } else if (next != null) {
                 next.handle(player, inputCards, game);
             }

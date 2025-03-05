@@ -54,4 +54,9 @@ public class Card {
         Map<String, Integer> suitOrder = Map.of("S", 1, "H", 2, "D", 3, "C", 4);
         return Integer.compare(suitOrder.get(this.suit), suitOrder.get(other.suit));
     }
+
+    @Override
+    public String toString() {
+        return suit + rank;
+    }
 }
