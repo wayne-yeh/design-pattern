@@ -13,6 +13,6 @@ public class SinglePattern implements CardPattern {
 
     @Override
     public int compare(List<Card> cards1, List<Card> cards2) {
-        return cards1.get(0).compareTo(cards2.get(0));
+        return cards1.getFirst().compareTo(cards2.getFirst());
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 
          int rankCompare = cards1.get(0).compareTo(cards2.get(0));
          if (rankCompare != 0) {
-             return rankCompare; // 點數不同，直接比較點數
+             return rankCompare;
          }
 
          Card maxCard1 = getMaxSuitCard(cards1.get(0), cards1.get(1));

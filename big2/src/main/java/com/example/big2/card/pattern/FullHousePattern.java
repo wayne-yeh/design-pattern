@@ -2,7 +2,9 @@ package com.example.big2.card.pattern;
 
 import com.example.big2.card.Card;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FullHousePattern implements CardPattern {
 
@@ -21,6 +23,21 @@ public class FullHousePattern implements CardPattern {
 
     @Override
     public int compare(List<Card> cards1, List<Card> cards2) {
-        return cards1.get(2).compareTo(cards2.get(2));
+        int threeOfAKind1 = getThreeOfAKindRank(cards1);
+        int threeOfAKind2 = getThreeOfAKindRank(cards2);
+        return Integer.compare(threeOfAKind1, threeOfAKind2);
+    }
+
+    private int getThreeOfAKindRank(List<Card> cards) {
+        Map<String, Integer> rankCount = new HashMap<>();
+        for (Card card : cards) {
+            rankCount.put(card.getRank(), rankCount.getOrDefault(card.getRank(), 0) + 1);
+        }
+        for (Map.Entry<String, Integer> entry : rankCount.entrySet()) {
+            if (entry.getValue() == 3) {
+                return new Card("", entry.getKey()).compareTo(new Card("", "3"));
+            }
+        }
+        return -1;
     }
 }
