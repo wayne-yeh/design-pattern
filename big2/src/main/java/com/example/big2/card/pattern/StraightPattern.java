@@ -5,7 +5,7 @@ import com.example.big2.card.Card;
 import java.util.Collections;
 import java.util.List;
 
-public class StraightPattern implements CardPattern {
+public class StraightPattern extends CardPattern {
 
     @Override
     public boolean isValid(List<Card> cards) {

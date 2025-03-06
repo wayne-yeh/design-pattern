@@ -4,7 +4,7 @@ import com.example.big2.card.Card;
 
 import java.util.List;
 
-public interface CardPattern {
-    boolean isValid(List<Card> cards);
-    int compare(List<Card> cards1, List<Card> cards2);
+public abstract class CardPattern {
+    abstract boolean isValid(List<Card> cards);
+    public abstract int compare(List<Card> cards1, List<Card> cards2);
 }

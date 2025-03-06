@@ -5,7 +5,7 @@ import com.example.big2.card.Card;
 import java.util.List;
 
 
- public class PairPattern implements CardPattern {
+ public class PairPattern extends CardPattern {
         @Override
         public boolean isValid(List<Card> cards) {
             return cards.size() == 2 && cards.get(0).getRank().equals(cards.get(1).getRank());
