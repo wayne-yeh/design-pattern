@@ -19,16 +19,17 @@ public class ValidationHandler extends PlayHandler{
     }
 
     @Override
-    public void handle(Player player, List<Card> inputCards, Game game) {
+    public void handle(Player player, List<Card> inputCards, Game game, List<CardPattern> cardPatterns) {
 
         if (inputCards == null || inputCards.isEmpty()) {
             if (next != null) {
-                next.handle(player, inputCards, game);
+                next.handle(player, inputCards, game, cardPatterns);
             }
             return;
         }
-
+        CardPatternFactory.registerPatternList(cardPatterns);
         CardPattern cardPattern = CardPatternFactory.getPattern(inputCards);
+
         List<Card> topPlay = game.getTopPlay();
 
         if (!topPlay.isEmpty()) {
@@ -40,7 +41,7 @@ public class ValidationHandler extends PlayHandler{
         }
 
         if (next != null) {
-            next.handle(player, inputCards, game);
+            next.handle(player, inputCards, game, cardPatterns);
         }
     }
 

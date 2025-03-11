@@ -1,6 +1,7 @@
 package com.example.big2.play;
 
 import com.example.big2.card.Card;
+import com.example.big2.card.pattern.CardPattern;
 import com.example.big2.game.Game;
 import com.example.big2.player.Player;
 
@@ -14,7 +15,7 @@ public class CheckHandler extends PlayHandler {
     }
 
     @Override
-    public void handle(Player player, List<Card> inputCards, Game game) {
+    public void handle(Player player, List<Card> inputCards, Game game, List<CardPattern> cardPatterns) {
         boolean cardhasC3 = inputCards != null && inputCards.stream()
                 .anyMatch(card -> card.getRank().equals("3") && card.getSuit().equals("C"));
 
@@ -25,7 +26,7 @@ public class CheckHandler extends PlayHandler {
         } else if (game.getLastPlayedPlayer() != null && game.getLastPlayedPlayer().equals(player)) {
             throw new IllegalArgumentException("Player " + player.getName() + " is the first player can not give up");
         } else if (next != null) {
-            next.handle(player, inputCards, game);
+            next.handle(player, inputCards, game, cardPatterns);
         }
     }
 }

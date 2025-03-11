@@ -1,6 +1,7 @@
 package com.example.big2.game;
 
 import com.example.big2.card.Card;
+import com.example.big2.card.pattern.CardPattern;
 import com.example.big2.deck.Deck;
 import com.example.big2.play.*;
 import com.example.big2.player.Player;
@@ -18,8 +19,13 @@ public class Game {
     private final Deck deck = new Deck();
     Player lastPlayedPlayer = null;
     boolean isAgain = false;
-    private PlayHandler clientPlayerHandler;
+    PlayHandler clientPlayerHandler;
+    List<CardPattern> cardPatterns;
 
+    public Game(PlayHandler clientPlayerHandler, List<CardPattern> cardPatterns){
+        this.clientPlayerHandler = clientPlayerHandler;
+        this.cardPatterns = cardPatterns;
+    }
     public int getRound() {
         return round;
     }
@@ -29,7 +35,6 @@ public class Game {
     }
 
     public void start() {
-        clientPlayerHandler = new CheckHandler(new PassHandler(new ValidationHandler(new PlayCardHandler(null))));
 
         deck.shuffle();
         enterPlayersName();
@@ -51,7 +56,7 @@ public class Game {
                 List<Card> handCards = player.getHandCards();
 
                 if (handCards.isEmpty()) {
-                    System.out.println("🎉 Player " + player.getName() + " wins the game! ");
+                    System.out.println(" Player " + player.getName() + " wins the game! ");
                     System.exit(0); // game over
                 }
 
@@ -76,7 +81,7 @@ public class Game {
 
                 if (input.equals("-1")) {
                     try {
-                        clientPlayerHandler.handle(player, null, this);
+                        clientPlayerHandler.handle(player, null, this, cardPatterns);
                         break;
                     } catch (IllegalArgumentException e) {
                         System.out.println(e.getMessage());
@@ -89,7 +94,7 @@ public class Game {
                             int cardIndex = Integer.parseInt(index.trim());
                             selectedCards.add(handCards.get(cardIndex));
                         }
-                        clientPlayerHandler.handle(player, selectedCards, this);
+                        clientPlayerHandler.handle(player, selectedCards, this, cardPatterns);
                         break;
                     } catch (IllegalArgumentException e) {
                         System.out.println("Invalid input: " + e.getMessage());

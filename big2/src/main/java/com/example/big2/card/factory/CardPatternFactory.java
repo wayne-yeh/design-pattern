@@ -3,15 +3,21 @@ package com.example.big2.card.factory;
 import com.example.big2.card.Card;
 import com.example.big2.card.pattern.*;
 
-import java.util.List;
+import java.util.*;
 
 public class CardPatternFactory {
+    private static List<CardPattern> PATTERNS = new ArrayList<>();
+
+    public static void registerPatternList(List<CardPattern> patterns) {
+        PATTERNS = patterns;
+    }
 
     public static CardPattern getPattern(List<Card> cards) {
-        if (new FullHousePattern().isValid(cards)) return new FullHousePattern();
-        if (new StraightPattern().isValid(cards)) return new StraightPattern();
-        if (new PairPattern().isValid(cards)) return new PairPattern();
-        if (new SinglePattern().isValid(cards)) return new SinglePattern();
+        for (CardPattern pattern : PATTERNS) {
+            if (pattern.isValid(cards)) {
+                return pattern;
+            }
+        }
         throw new IllegalArgumentException("Invalid card pattern");
     }
 }

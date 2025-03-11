@@ -2,6 +2,7 @@ package com.example.big2.play;
 
 import com.example.big2.card.Card;
 import com.example.big2.card.factory.CardPatternFactory;
+import com.example.big2.card.pattern.CardPattern;
 import com.example.big2.game.Game;
 import com.example.big2.player.Player;
 
@@ -14,7 +15,7 @@ public class PlayCardHandler extends PlayHandler {
         }
 
         @Override
-        public void handle(Player player, List<Card> inputCards, Game game) {
+        public void handle(Player player, List<Card> inputCards, Game game, List<CardPattern> cardPatterns) {
             if (inputCards != null && !inputCards.isEmpty()) {
                 player.getHandCards().removeAll(inputCards);
                 game.setTopPlay(inputCards);
@@ -23,7 +24,7 @@ public class PlayCardHandler extends PlayHandler {
                 player.hasC3 = false;
                 System.out.printf("Player %s plays %s\n", player.getName(), inputCards.stream().map(Card::toString).toList());
             } else if (next != null) {
-                next.handle(player, inputCards, game);
+                next.handle(player, inputCards, game, cardPatterns);
             }
         }
 

@@ -6,10 +6,12 @@ import java.util.List;
 
 
  public class PairPattern extends CardPattern {
-        @Override
-        public boolean isValid(List<Card> cards) {
+
+
+     @Override
+     public boolean isValid(List<Card> cards) {
             return cards.size() == 2 && cards.get(0).getRank().equals(cards.get(1).getRank());
-        }
+     }
 
      @Override
      public int compare(List<Card> cards1, List<Card> cards2) {
