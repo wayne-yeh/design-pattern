@@ -49,6 +49,12 @@ public class Game {
                 System.out.println("passCount: " + passCount);
                 Player player = indexPlayers.get(round);
                 List<Card> handCards = player.getHandCards();
+
+                if (handCards.isEmpty()) {
+                    System.out.println("🎉 Player " + player.getName() + " wins the game! ");
+                    System.exit(0); // game over
+                }
+
                 System.out.println("Turn player " + player.getName() + " player index " + round);
 
                 if (!topPlay.isEmpty()) {

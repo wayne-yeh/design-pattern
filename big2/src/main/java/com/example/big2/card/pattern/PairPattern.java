@@ -5,7 +5,7 @@ import com.example.big2.card.Card;
 import java.util.List;
 
 
- public class PairPattern implements CardPattern {
+ public class PairPattern extends CardPattern {
         @Override
         public boolean isValid(List<Card> cards) {
             return cards.size() == 2 && cards.get(0).getRank().equals(cards.get(1).getRank());
@@ -16,7 +16,7 @@ import java.util.List;
 
          int rankCompare = cards1.get(0).compareTo(cards2.get(0));
          if (rankCompare != 0) {
-             return rankCompare; // 點數不同，直接比較點數
+             return rankCompare;
          }
 
          Card maxCard1 = getMaxSuitCard(cards1.get(0), cards1.get(1));

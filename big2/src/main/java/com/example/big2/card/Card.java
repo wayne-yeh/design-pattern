@@ -3,7 +3,7 @@ package com.example.big2.card;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Card {
+public class Card implements Comparable<Card>{
 
     private String suit;
     private String rank;
