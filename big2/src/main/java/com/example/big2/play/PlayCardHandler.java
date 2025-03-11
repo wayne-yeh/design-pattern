@@ -20,6 +20,7 @@ public class PlayCardHandler extends PlayHandler {
                 game.setTopPlay(inputCards);
                 game.setLastPlayedPlayer(player);
                 game.resetPassCount();
+                player.hasC3 = false;
                 System.out.printf("Player %s plays %s\n", player.getName(), inputCards.stream().map(Card::toString).toList());
             } else if (next != null) {
                 next.handle(player, inputCards, game);
