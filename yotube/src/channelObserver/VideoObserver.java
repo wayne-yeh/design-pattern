@@ -1,8 +1,7 @@
-package ChannelObserver;
+package channelObserver;
 
 import channel.Channel;
 import subscribe.Subscriber;
-import video.Video;
 
 import java.util.List;
 

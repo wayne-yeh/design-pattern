@@ -1,4 +1,4 @@
-import ChannelObserver.VideoObserver;
+import channelObserver.VideoObserver;
 import channel.Channel;
 import subscribe.Subscriber;
 import video.Video;

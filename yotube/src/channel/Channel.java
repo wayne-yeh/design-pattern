@@ -1,6 +1,6 @@
 package channel;
 
-import ChannelObserver.ChannelObserver;
+import channelObserver.ChannelObserver;
 import subscribe.Subscriber;
 import video.Video;
 
