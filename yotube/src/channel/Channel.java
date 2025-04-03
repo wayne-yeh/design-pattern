@@ -1,6 +1,6 @@
 package channel;
 
-import channelObserver.ChannelObserver;
+import channelObserver.SubscriberObserver;
 import subscribe.Subscriber;
 import video.Video;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Channel {
 
-    List<ChannelObserver> channelObserverList = new ArrayList<>();
+    List<SubscriberObserver> subscriberObserverList = new ArrayList<>();
 
     List<Subscriber> subscribers = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class Channel {
     public void setSubscribers(List<Subscriber> subscribers) {
         this.subscribers = subscribers;
     }
-    public void subscribe(Subscriber subscriber){
+    public void addSubscribe(Subscriber subscriber){
         subscribers.add(subscriber);
     }
 
@@ -49,17 +49,20 @@ public class Channel {
         channelNotify();
     }
 
-    public void register(ChannelObserver channelObserver){
-        channelObserverList.add(channelObserver);
+    public void register(SubscriberObserver subscriberObserver){
+        subscriberObserverList.add(subscriberObserver);
     }
-    public void unRegister(ChannelObserver channelObserver){
-        channelObserverList.remove(channelObserver);
+    public void unRegister(SubscriberObserver subscriberObserver){
+        subscriberObserverList.remove(subscriberObserver);
     }
 
     private void channelNotify() {
-        for (ChannelObserver channelObserver : channelObserverList) {
-            channelObserver.update(this);
+        for (SubscriberObserver subscriberObserver : subscriberObserverList) {
+            subscriberObserver.update(this);
         }
     }
 
+    public void removeSubscriber(Subscriber subscriber) {
+        subscribers.remove(subscriber);
+    }
 }
