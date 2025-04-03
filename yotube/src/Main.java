@@ -28,7 +28,7 @@ public class Main {
 
         Video video2 = new Video();
         video2.setTitle("Titanic");
-        video2.setLength(30);
+        video2.setLength(5000);
         video2.setDescription("romantic type");
         channel1.upload(video2);
 
