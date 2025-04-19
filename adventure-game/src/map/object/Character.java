@@ -5,18 +5,50 @@ import map.object.state.Normal;
 public class Character {
 
     String symbol = "↑→↓←";
+    char direction;
     private int hp;
-    State state = new Normal();
     private int x; // row
     private int y; // column
+    State state = null;
 
-    public Character(int x, int y, int defultHp) {
-        this.x = x;
-        this.y = y;
-        this.hp = defultHp;
+    public int getX() {
+        return x;
     }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public int getHp() {
         return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public char getDirection() {
+        return direction;
+    }
+
+    public void setDirection(char direction) {
+        this.direction = direction;
     }
 
     public void move(char c) {
@@ -39,6 +71,7 @@ public class Character {
         System.out.println("角色現在位置: (" + x + ", " + y + ")");
     }
 
-    public int getX() { return x; }
-    public int getY() { return y; }
+
+
+
 }

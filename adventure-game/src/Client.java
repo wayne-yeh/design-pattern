@@ -18,7 +18,6 @@ public class Client {
 
 
         GameMap map = new GameMap(10, 10, treasures);
-        map.generateTreasure();
         System.out.println("Hello, World!");
     }
 }
