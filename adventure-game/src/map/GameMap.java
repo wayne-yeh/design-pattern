@@ -10,14 +10,14 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameMap {
+
     int row;
     int column;
     public Character character;
     Obstacle obstacle;
     List<Monster> monsters = new ArrayList<>();
 
-
-    static Set<String> occupiedCoordinates = new HashSet<>();
+    public static Map<String, Object> occupiedCoordinates = new HashMap<>();
     List<Treasure> generatedTreasures = new ArrayList<>();
     List<Treasure> registeredTreasures = new ArrayList<>();
 
@@ -37,24 +37,22 @@ public class GameMap {
     }
 
     private void generateObstacle(){
-        Location location = getRandomAndSaveLocation();
         obstacle = new Obstacle();
+        Location location = getRandomAndSaveLocation(obstacle);
         obstacle.setX(location.getX());
-        obstacle.setX(location.getY());
+        obstacle.setY(location.getY());
         System.out.println("生成障礙物: " + obstacle.getClass().getSimpleName() + " at (" + obstacle.getX() + ", " + obstacle.getY() + ")");
-
     }
 
     private void generateCharacter() {
-
-        Location location = getRandomAndSaveLocation();
+        character = new Character();
+        Location location = getRandomAndSaveLocation(character);
 
 
         int defaultHp = 300;
         char defaultDirection = '→';
         State defaultState = new Normal();
 
-        character = new Character();
 
         character.setX(location.getX());
         character.setY(location.getY());
@@ -72,8 +70,8 @@ public class GameMap {
 
 
     private void generateMonster() {
-        Location location = getRandomAndSaveLocation();
         Monster monster = new Monster();
+        Location location = getRandomAndSaveLocation(monster);
         monster.setX(location.getX());
         monster.setY(location.getY());
         System.out.println("生成怪物: " + monster.getName() + " at (" + monster.getX() + ", " + monster.getY() + ")");
@@ -87,7 +85,7 @@ public class GameMap {
 
         for (Treasure treasure : registeredTreasures) {
             if (Math.random() < treasure.getProbability()) {
-                Location location = getRandomAndSaveLocation();
+                Location location = getRandomAndSaveLocation(treasure);
                 treasure.setX(location.getX());
                 treasure.setY(location.getY());
                 System.out.println("生成寶物: " + treasure.getClass().getSimpleName() + " at (" + treasure.getX() + ", " + treasure.getY() + ")");
@@ -102,7 +100,7 @@ public class GameMap {
 
     }
 
-    private Location getRandomAndSaveLocation() {
+    private Location getRandomAndSaveLocation(Object object) {
         int x, y;
         String position = null;
         Location location = new Location();
@@ -110,11 +108,11 @@ public class GameMap {
             x = ThreadLocalRandom.current().nextInt(row);
             y = ThreadLocalRandom.current().nextInt(column);
             position = x + "," + y;
-        } while (occupiedCoordinates.contains(position));
+        } while (occupiedCoordinates.containsKey(position));
 
         location.setX(x);
         location.setY(y);
-        occupiedCoordinates.add(position);
+        occupiedCoordinates.put(position, object);
         return location;
     }
 

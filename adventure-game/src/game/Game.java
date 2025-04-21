@@ -22,10 +22,8 @@ public class Game {
         Character character = map.getCharacter();
         List<Monster> monsters = map.getMonsters();
         while (true) {
-
             System.out.print("請輸入方向（↑, ↓, ←, →）或 A 攻擊: ");
             char input = scanner.next().charAt(0);
-
             if (input == 'A') {
                 character.attack(monsters);
             } else {

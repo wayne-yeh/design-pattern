@@ -1,11 +1,13 @@
 package map.object;
 
-import map.object.state.Normal;
+import map.GameMap;
+import map.Object;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class Character {
+
+public class Character extends Object {
 
     String symbol = "↑→↓←";
     char direction;
@@ -55,7 +57,11 @@ public class Character {
     }
 
     public void move(char c) {
-        switch (c) {
+        int currentX = this.x;
+        int currentY = this.y;
+        String currentPosition = this.x + "," + this.y;
+
+            switch (c) {
             case '↑':
                 y++;
                 break;
@@ -70,11 +76,50 @@ public class Character {
                 break;
             default:
                 System.out.println("無效指令: " + c);
+            }
+
+        int nextX = this.x;
+        int nextY = this.y;
+        String nextPosition = this.x + "," + this.y;
+        System.out.println(GameMap.occupiedCoordinates);
+        if (GameMap.occupiedCoordinates.containsKey(nextPosition)) {
+            System.out.println("enter");
+            Object object = GameMap.occupiedCoordinates.get(nextPosition);
+            if (object instanceof Treasure) {
+                System.out.println("觸碰到寶物了");
+                System.out.println("寶物消失");
+                touch();
+                GameMap.occupiedCoordinates.remove(currentPosition);
+                GameMap.occupiedCoordinates.put(nextPosition, this);
+            } else if (object instanceof Monster) {
+                touchAndStay(currentX, currentY, c, object);
+                return;
+            } else if (object instanceof Obstacle) {
+                touchAndStay(currentX, currentY, c, object);
+                return;
+            }
         }
+        System.out.println("角色移動成功");
+        GameMap.occupiedCoordinates.remove(currentPosition);
+        GameMap.occupiedCoordinates.put(nextPosition, this);
+
         direction = c;
         System.out.println("角色現在面向:" + direction);
-
         System.out.println("角色現在位置: (" + x + ", " + y + ")");
+    }
+
+    private void touchAndStay(int currentX, int currentY, char c, Object object) {
+        System.out.printf("觸碰「%s」了%n", object.getClass().getSimpleName());
+        System.out.println("停留在原地");
+        this.x = currentX;
+        this.y = currentY;
+        direction = c;
+        System.out.println("角色現在面向:" + direction);
+        System.out.println("角色現在位置: (" + x + ", " + y + ")");
+    }
+
+
+    private void touch() {
     }
 
     public void attack(List<Monster> monsters) {

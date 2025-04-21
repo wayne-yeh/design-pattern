@@ -1,8 +1,11 @@
 package map.object;
 
+import map.GameMap;
+import map.Object;
+
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Monster {
+public class Monster extends Object {
     String symbol = "M";
     int x = -1;
     int y = -1;
@@ -75,6 +78,10 @@ public class Monster {
 
     public void die() {
         this.hp = 0;
+       GameMap.occupiedCoordinates.remove(this.x+","+this.y);
+
         System.out.println(this.name + " 死亡");
+        System.out.println("移除位置:"+this.x+","+this.y);
+
     }
 }

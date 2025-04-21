@@ -1,6 +1,8 @@
 package map.object;
 
-public abstract class Treasure {
+import map.Object;
+
+public abstract class Treasure extends Object {
 
     String symbol = "x";
     private final double probability;
