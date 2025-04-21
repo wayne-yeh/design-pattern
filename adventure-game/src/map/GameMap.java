@@ -12,11 +12,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameMap {
     int row;
     int column;
+    public Character character;
+    Obstacle obstacle;
+    List<Monster> monsters = new ArrayList<>();
 
-    Obstacle obstacle = null;
-    Set<String> occupiedCoordinates = new HashSet<>();
+
+    static Set<String> occupiedCoordinates = new HashSet<>();
     List<Treasure> generatedTreasures = new ArrayList<>();
-    List<Treasure> generatedMonster = new ArrayList<>();
     List<Treasure> registeredTreasures = new ArrayList<>();
 
     public GameMap(int row, int column, List<Treasure> treasures) {
@@ -30,7 +32,17 @@ public class GameMap {
     private void initialize() {
         generateTreasure();
         generateMonster();
+        generateObstacle();
         generateCharacter();
+    }
+
+    private void generateObstacle(){
+        Location location = getRandomAndSaveLocation();
+        obstacle = new Obstacle();
+        obstacle.setX(location.getX());
+        obstacle.setX(location.getY());
+        System.out.println("生成障礙物: " + obstacle.getClass().getSimpleName() + " at (" + obstacle.getX() + ", " + obstacle.getY() + ")");
+
     }
 
     private void generateCharacter() {
@@ -38,11 +50,11 @@ public class GameMap {
         Location location = getRandomAndSaveLocation();
 
 
-        int defaultHp = 100;
+        int defaultHp = 300;
         char defaultDirection = '→';
         State defaultState = new Normal();
 
-        Character character = new Character();
+        character = new Character();
 
         character.setX(location.getX());
         character.setY(location.getY());
@@ -50,6 +62,10 @@ public class GameMap {
         character.setHp(defaultHp);
         character.setState(defaultState);
         character.setDirection(defaultDirection);
+        System.out.println("角色: " + character.getClass().getSimpleName() + " at (" + character.getX() + ", " + character.getY() + ")");
+        System.out.println("角色的HP : " + character.getHp());
+        System.out.println("角色的面向 : " + character.getDirection());
+        System.out.println("角色的狀態: " + character.getState().getClass().getSimpleName());
 
     }
 
@@ -60,8 +76,8 @@ public class GameMap {
         Monster monster = new Monster();
         monster.setX(location.getX());
         monster.setY(location.getY());
-        System.out.println("生成怪物: " + monster.getClass().getSimpleName() + " at (" + monster.getX() + ", " + monster.getY() + ")");
-
+        System.out.println("生成怪物: " + monster.getName() + " at (" + monster.getX() + ", " + monster.getY() + ")");
+        monsters.add(monster);
     }
 
     private void generateTreasure(){
@@ -74,7 +90,7 @@ public class GameMap {
                 Location location = getRandomAndSaveLocation();
                 treasure.setX(location.getX());
                 treasure.setY(location.getY());
-                System.out.println("生成寶物: " + treasure.getClass().getSimpleName() + " at (" + x + ", " + y + ")");
+                System.out.println("生成寶物: " + treasure.getClass().getSimpleName() + " at (" + treasure.getX() + ", " + treasure.getY() + ")");
                 break;
             }
 
@@ -97,8 +113,24 @@ public class GameMap {
         } while (occupiedCoordinates.contains(position));
 
         location.setX(x);
-        location.setX(y);
+        location.setY(y);
         occupiedCoordinates.add(position);
         return location;
+    }
+
+    public List<Monster> getMonsters() {
+        return monsters;
+    }
+
+    public void setMonsters(List<Monster> monsters) {
+        this.monsters = monsters;
+    }
+
+    public Character getCharacter() {
+        return character;
+    }
+
+    public void setCharacter(Character character) {
+        this.character = character;
     }
 }

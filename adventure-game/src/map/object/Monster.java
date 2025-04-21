@@ -1,10 +1,18 @@
 package map.object;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Monster {
     String symbol = "M";
     int x = -1;
     int y = -1;
-
+    int hp = 1;
+    private static int idCounter = 1;
+    private String name;
+    public Monster() {
+        this.name = "怪物" + idCounter;
+        idCounter++;
+    }
     public int getX() {
         return x;
     }
@@ -19,5 +27,54 @@ public class Monster {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void move() {
+
+        char[] directions = {'↑', '↓', '←', '→'};
+        char c = directions[ThreadLocalRandom.current().nextInt(4)];
+
+        switch (c) {
+            case '↑':
+                y++;
+                break;
+            case '↓':
+                y--;
+                break;
+            case '←':
+                x--;
+                break;
+            case '→':
+                x++;
+                break;
+        }
+
+        System.out.println("怪物:"+ this.getClass() +", 現在位置: (" + x + ", " + y + ")");
+    }
+    public void attack(Character hero) {
+        int hx = hero.getX();
+        int hy = hero.getY();
+
+        if ((hx == x && Math.abs(hy - y) == 1) ||
+                (hy == y && Math.abs(hx - x) == 1)) {
+
+            System.out.println("怪物攻擊主角！來自 (" + x + ", " + y + ") 減少50點生命值");
+            hero.setHp(hero.getHp() - 50);
+            System.out.println("主角目前的生命值為 "+ hero.getHp());
+
+        }
+    }
+
+    public void die() {
+        this.hp = 0;
+        System.out.println(this.name + " 死亡");
     }
 }
