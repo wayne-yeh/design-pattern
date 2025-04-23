@@ -11,8 +11,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameMap {
 
-    int row;
-    int column;
+
+    public static int maxRow;
+    public static int maxColumn;
     public Character character;
     Obstacle obstacle;
     List<Monster> monsters = new ArrayList<>();
@@ -22,8 +23,8 @@ public class GameMap {
     List<Treasure> registeredTreasures = new ArrayList<>();
 
     public GameMap(int row, int column, List<Treasure> treasures) {
-        this.row = row;
-        this.column = column;
+        this.maxRow = row;
+        this.maxColumn = column;
         this.registeredTreasures = treasures;
         System.out.println("生成地圖: (" + row + ", " + column + ")");
         initialize();
@@ -72,6 +73,7 @@ public class GameMap {
     private void generateMonster() {
         Monster monster = new Monster();
         Location location = getRandomAndSaveLocation(monster);
+
         monster.setX(location.getX());
         monster.setY(location.getY());
         System.out.println("生成怪物: " + monster.getName() + " at (" + monster.getX() + ", " + monster.getY() + ")");
@@ -105,8 +107,8 @@ public class GameMap {
         String position = null;
         Location location = new Location();
         do {
-            x = ThreadLocalRandom.current().nextInt(row);
-            y = ThreadLocalRandom.current().nextInt(column);
+            x = ThreadLocalRandom.current().nextInt(maxRow);
+            y = ThreadLocalRandom.current().nextInt(maxColumn);
             position = x + "," + y;
         } while (occupiedCoordinates.containsKey(position));
 

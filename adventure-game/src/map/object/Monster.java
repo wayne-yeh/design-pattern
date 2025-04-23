@@ -41,7 +41,9 @@ public class Monster extends Object {
     }
 
     public void move() {
-
+        int currentX = this.x;
+        int currentY = this.y;
+        String currentPosition = this.x + "," + this.y;
         char[] directions = {'↑', '↓', '←', '→'};
         char c = directions[ThreadLocalRandom.current().nextInt(4)];
 
@@ -59,7 +61,17 @@ public class Monster extends Object {
                 x++;
                 break;
         }
-
+        String nextPosition = this.x + "," + this.y;
+        if (x < 0 || x > GameMap.maxRow || y < 0 || y > GameMap.maxColumn) {
+            System.out.println("無法移動：超出地圖邊界");
+            x = currentX;
+            y = currentY;
+            System.out.println("怪物現在位置: (" + x + ", " + y + ")");
+            return;
+        }
+        System.out.println("怪物移動成功");
+        GameMap.occupiedCoordinates.remove(currentPosition);
+        GameMap.occupiedCoordinates.put(nextPosition, this);
         System.out.println("怪物:"+ this.getClass() +", 現在位置: (" + x + ", " + y + ")");
     }
     public void attack(Character hero) {

@@ -62,24 +62,30 @@ public class Character extends Object {
         String currentPosition = this.x + "," + this.y;
 
             switch (c) {
-            case '↑':
-                y++;
-                break;
-            case '↓':
-                y--;
-                break;
-            case '←':
-                x--;
-                break;
-            case '→':
-                x++;
-                break;
-            default:
+                case '↑':
+                    y++;
+                    break;
+                case '↓':
+                    y--;
+                    break;
+                case '←':
+                    x--;
+                    break;
+                case '→':
+                    x++;
+                    break;
+                default:
                 System.out.println("無效指令: " + c);
             }
 
-        int nextX = this.x;
-        int nextY = this.y;
+        if (x < 0 || x > GameMap.maxRow || y < 0 || y > GameMap.maxColumn) {
+            System.out.println("無法移動：超出地圖邊界");
+            System.out.println("角色現在面向:" + direction);
+            x = currentX;
+            y = currentY;
+            System.out.println("角色現在位置: (" + x + ", " + y + ")");
+            return;
+        }
         String nextPosition = this.x + "," + this.y;
         System.out.println(GameMap.occupiedCoordinates);
         if (GameMap.occupiedCoordinates.containsKey(nextPosition)) {
@@ -87,8 +93,7 @@ public class Character extends Object {
             Object object = GameMap.occupiedCoordinates.get(nextPosition);
             if (object instanceof Treasure) {
                 System.out.println("觸碰到寶物了");
-                System.out.println("寶物消失");
-                touch();
+                touch((Treasure) object);
                 GameMap.occupiedCoordinates.remove(currentPosition);
                 GameMap.occupiedCoordinates.put(nextPosition, this);
             } else if (object instanceof Monster) {
@@ -108,6 +113,11 @@ public class Character extends Object {
         System.out.println("角色現在位置: (" + x + ", " + y + ")");
     }
 
+    private void touch(Treasure treasure) {
+        this.setState(treasure.getState());
+        System.out.println("角色狀態已變更為: " + treasure.getState().getClass().getSimpleName());
+    }
+
     private void touchAndStay(int currentX, int currentY, char c, Object object) {
         System.out.printf("觸碰「%s」了%n", object.getClass().getSimpleName());
         System.out.println("停留在原地");
@@ -116,10 +126,6 @@ public class Character extends Object {
         direction = c;
         System.out.println("角色現在面向:" + direction);
         System.out.println("角色現在位置: (" + x + ", " + y + ")");
-    }
-
-
-    private void touch() {
     }
 
     public void attack(List<Monster> monsters) {
@@ -135,55 +141,66 @@ public class Character extends Object {
             int monsterX = monster.getX();
             int monsterY = monster.getY();
 
-            System.out.println(monster.getName()+ " at (" + monsterX + ", " + monsterY + ")");
             boolean blocked = false;
-
-            // 上面方向：怪物跟主角同一欄，且怪物在主角上方
             if (direction == '↑' && monsterX == characterX && monsterY > characterY) {
                 for (int y = characterY + 1; y < monsterY; y++) {
-                    String key = characterX + "," + y;
-                    blocked = checkBlock(key);
+                    String eachPos = characterX + "," + y;
+                    blocked = checkBlock(eachPos);
                     if (blocked) {
                         break;
                     }
                 }
                 if (!blocked){
-                    killMonster(it, monster);
+                    killed = killMonster(it, monster);
+                }
+            } else if (direction == '↓' && monsterX == characterX && monsterY < characterY) {
+                for (int y = characterY - 1; y > monsterY; y--) {
+                    String eachPos = characterX + "," + y;
+                    blocked = checkBlock(eachPos);
+                    if (blocked) {
+                        break;
+                    }
+                }
+                if (!blocked){
+                    killed = killMonster(it, monster);
+                }
+            } else if (direction == '←' && monsterY == characterY && monsterX < characterX) {
+                for (int x = characterX - 1; x > monsterX; x--) {
+                    String eachPos = characterX + "," + y;
+                    blocked = checkBlock(eachPos);
+                    if (blocked) {
+                        break;
+                    }
+                }
+                if (!blocked){
+                    killed = killMonster(it, monster);
+                }
+
+            } else if (direction == '→' && monsterY == characterY && monsterX > characterX) {
+                for (int x = characterX - 1; x > monsterX; x--) {
+                    String eachPos = characterX + "," + y;
+                    blocked = checkBlock(eachPos);
+                    if (blocked) {
+                        break;
+                    }
+                }
+                if (!blocked){
+                    killed = killMonster(it, monster);
                 }
             }
 
-            // 下面方向：同一欄，怪物在主角下方
-            else if (direction == '↓' && monsterX == characterX && monsterY < characterY) {
-                it.remove();
-                System.out.println("擊殺怪物 at (" + monsterX + ", " + monsterY + ")");
-                monster.die();
-            }
-
-            // 左邊方向：同一列，怪物在主角左邊
-            else if (direction == '←' && monsterY == characterY && monsterX < characterX) {
-                it.remove();
-                System.out.println("擊殺怪物 at (" + monsterX + ", " + monsterY + ")");
-                monster.die();
-            }
-
-            // 右邊方向：同一列，怪物在主角右邊
-            else if (direction == '→' && monsterY == characterY && monsterX > characterX) {
-                it.remove();
-                monster.die();
-                System.out.println("擊殺怪物 at (" + monsterX + ", " + monsterY + ")");
-                monster.die();
-            } else if (i == monsters.size()){
+            if (!killed && i == monsters.size()){
                 System.out.println("沒有擊殺任何怪物");
             }
-
             i++;
         }
     }
 
-    private void killMonster(Iterator<Monster> it, Monster monster) {
+    private boolean killMonster(Iterator<Monster> it, Monster monster) {
         it.remove();
         System.out.println("擊殺怪物 at (" + monster.getX() + ", " + monster.getY() + ")");
         monster.die();
+        return true;
     }
 
 
@@ -191,6 +208,8 @@ public class Character extends Object {
 
         if (GameMap.occupiedCoordinates.containsKey(key)
                 && GameMap.occupiedCoordinates.get(key) instanceof Obstacle) {
+            Obstacle obstacle = (Obstacle) GameMap.occupiedCoordinates.get(key);
+            System.out.print("有障礙物無法擊殺 障礙物位置:" + obstacle.getX() +", "+obstacle.getY());
             return true;
         }
         return false;

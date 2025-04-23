@@ -1,5 +1,6 @@
 package map.object;
 
+import map.GameMap;
 import map.Object;
 
 public abstract class Treasure extends Object {
@@ -8,16 +9,15 @@ public abstract class Treasure extends Object {
     private final double probability;
     int x = -1;
     int y = -1;
-
-    public Treasure(double probability) {
+    private final State state;
+    public Treasure(double probability, State state) {
         this.probability = probability;
+        this.state = state;
     }
 
     public double getProbability() {
         return probability;
     }
-
-    public abstract void onTouch();
 
     public int getX() {
         return x;
@@ -33,5 +33,19 @@ public abstract class Treasure extends Object {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void onTouch(Character character){
+        character.setState(this.getState());
+        disappear();
+    }
+
+    private void disappear() {
+        GameMap.occupiedCoordinates.remove(this.getX() +"," + this.getY());
+        System.out.print(this.getClass().getSimpleName()+"消失了");
     }
 }
