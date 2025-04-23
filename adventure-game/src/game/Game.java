@@ -13,21 +13,33 @@ import java.util.Scanner;
 public class Game {
 
     static List<Treasure> registerTreasures = new ArrayList<>();
-
+    public static boolean isGameOver = false;
     public void start(){
 
         registerTreasures();
-        GameMap map = new GameMap(10, 10, registerTreasures);
+        GameMap map = new GameMap(3, 3, registerTreasures);
         Scanner scanner = new Scanner(System.in);
         Character character = map.getCharacter();
         List<Monster> monsters = map.getMonsters();
+
         while (true) {
+
             System.out.print("請角色輸入方向（↑, ↓, ←, →）或 A 攻擊: ");
             char input = scanner.next().charAt(0);
+
             if (input == 'A') {
                 character.attack(monsters);
             } else {
                 character.move(input);
+            }
+
+            for (Monster monster: monsters) {
+                monster.checkMoveOrAttack(character);
+                monster.checkMoveOrAttack(character);
+                monster.checkMoveOrAttack(character);
+                monster.checkMoveOrAttack(character);
+                monster.checkMoveOrAttack(character);
+
             }
 
         }

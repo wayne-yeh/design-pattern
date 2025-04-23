@@ -1,7 +1,9 @@
 package map.object;
 
+import game.Game;
 import map.GameMap;
 import map.Object;
+import map.object.state.Normal;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,8 +16,7 @@ public class Character extends Object {
     private int hp;
     private int x; // row
     private int y; // column
-    State state = null;
-
+    State state = new Normal();
     public int getX() {
         return x;
     }
@@ -37,7 +38,23 @@ public class Character extends Object {
     }
 
     public void setHp(int hp) {
+        if (hp > 300) {
+            throw new IllegalArgumentException("生命值不能大於300");
+        } else if (hp <= 0) {
+            System.out.println("遊戲即將結束, 角色生命值小於0");
+            die();
+        }
         this.hp = hp;
+    }
+
+    private void die() {
+        this.hp = 0;
+        GameMap.occupiedCoordinates.remove(this.x+","+this.y);
+        System.out.println("角色死亡");
+        System.out.println("移除位置:"+this.x+","+this.y);
+        this.x = -100;
+        this.y = -100;
+        Game.isGameOver = true;
     }
 
     public State getState() {
@@ -93,7 +110,7 @@ public class Character extends Object {
             Object object = GameMap.occupiedCoordinates.get(nextPosition);
             if (object instanceof Treasure) {
                 System.out.println("觸碰到寶物了");
-                touch((Treasure) object);
+                touch((Treasure) object, this);
                 GameMap.occupiedCoordinates.remove(currentPosition);
                 GameMap.occupiedCoordinates.put(nextPosition, this);
             } else if (object instanceof Monster) {

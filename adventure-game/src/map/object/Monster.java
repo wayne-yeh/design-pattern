@@ -2,6 +2,7 @@ package map.object;
 
 import map.GameMap;
 import map.Object;
+import map.object.state.Normal;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -12,6 +13,8 @@ public class Monster extends Object {
     int hp = 1;
     private static int idCounter = 1;
     private String name;
+    State state = new Normal();
+
     public Monster() {
         this.name = "怪物" + idCounter;
         idCounter++;
@@ -38,6 +41,15 @@ public class Monster extends Object {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void checkMoveOrAttack(Character character){
+
+        if (isAdjacentTo(character)) {
+            attack(character);
+        } else {
+            move();
+        }
     }
 
     public void move() {
@@ -69,31 +81,53 @@ public class Monster extends Object {
             System.out.println("怪物現在位置: (" + x + ", " + y + ")");
             return;
         }
+
+        if (GameMap.occupiedCoordinates.containsKey(nextPosition)) {
+            System.out.println("enter");
+            Object object = GameMap.occupiedCoordinates.get(nextPosition);
+            if (object instanceof Treasure) {
+                System.out.println("觸碰到寶物了");
+                touch((Treasure) object, this);
+                GameMap.occupiedCoordinates.remove(currentPosition);
+                GameMap.occupiedCoordinates.put(nextPosition, this);
+            } else if (object instanceof Character) {
+                touchAndStay(currentX, currentY, c, object);
+                return;
+            } else if (object instanceof Obstacle) {
+                touchAndStay(currentX, currentY, c, object);
+                return;
+            }
+        }
         System.out.println("怪物移動成功");
         GameMap.occupiedCoordinates.remove(currentPosition);
         GameMap.occupiedCoordinates.put(nextPosition, this);
-        System.out.println("怪物:"+ this.getClass() +", 現在位置: (" + x + ", " + y + ")");
+        System.out.println("怪物:"+ this.getName() +", 現在位置: (" + x + ", " + y + ")");
     }
-    public void attack(Character hero) {
-        int hx = hero.getX();
-        int hy = hero.getY();
+    public void attack(Character character) {
+        int cx = character.getX();
+        int cy = character.getY();
 
-        if ((hx == x && Math.abs(hy - y) == 1) ||
-                (hy == y && Math.abs(hx - x) == 1)) {
-
+        if (isAdjacentTo(character)) {
             System.out.println("怪物攻擊主角！來自 (" + x + ", " + y + ") 減少50點生命值");
-            hero.setHp(hero.getHp() - 50);
-            System.out.println("主角目前的生命值為 "+ hero.getHp());
-
+            character.setHp(character.getHp() - 50);
+            System.out.println("主角目前的生命值為 "+ character.getHp());
         }
     }
 
     public void die() {
         this.hp = 0;
-       GameMap.occupiedCoordinates.remove(this.x+","+this.y);
-
+        GameMap.occupiedCoordinates.remove(this.x+","+this.y);
         System.out.println(this.name + " 死亡");
         System.out.println("移除位置:"+this.x+","+this.y);
+    }
+    private boolean isAdjacentTo(Character character) {
+        int cx = character.getX();
+        int cy = character.getY();
+        return (cx == x && Math.abs(cy - y) == 1) ||
+                (cy == y && Math.abs(cx - x) == 1);
+    }
 
+    public void setState(State state) {
+        this.state = state;
     }
 }
