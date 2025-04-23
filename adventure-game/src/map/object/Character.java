@@ -125,38 +125,53 @@ public class Character extends Object {
     public void attack(List<Monster> monsters) {
         Iterator<Monster> it = monsters.iterator();
         int i = 1;
+        boolean killed = false;
+        int characterX = this.getX();
+        int characterY = this.getY();
+
         while (it.hasNext()) {
-            Monster m = it.next();
-            System.out.println(m.getName()+ " at (" + m.getX() + ", " + m.getY() + ")");
+
+            Monster monster = it.next();
+            int monsterX = monster.getX();
+            int monsterY = monster.getY();
+
+            System.out.println(monster.getName()+ " at (" + monsterX + ", " + monsterY + ")");
+            boolean blocked = false;
 
             // 上面方向：怪物跟主角同一欄，且怪物在主角上方
-            if (direction == '↑' && m.getX() == x && m.getY() > y) {
-                it.remove();
-                System.out.println("擊殺怪物 at (" + m.getX() + ", " + m.getY() + ")");
-                m.die();
-
+            if (direction == '↑' && monsterX == characterX && monsterY > characterY) {
+                for (int y = characterY + 1; y < monsterY; y++) {
+                    String key = characterX + "," + y;
+                    blocked = checkBlock(key);
+                    if (blocked) {
+                        break;
+                    }
+                }
+                if (!blocked){
+                    killMonster(it, monster);
+                }
             }
 
             // 下面方向：同一欄，怪物在主角下方
-            else if (direction == '↓' && m.getX() == x && m.getY() < y) {
+            else if (direction == '↓' && monsterX == characterX && monsterY < characterY) {
                 it.remove();
-                System.out.println("擊殺怪物 at (" + m.getX() + ", " + m.getY() + ")");
-                m.die();
+                System.out.println("擊殺怪物 at (" + monsterX + ", " + monsterY + ")");
+                monster.die();
             }
 
             // 左邊方向：同一列，怪物在主角左邊
-            else if (direction == '←' && m.getY() == y && m.getX() < x) {
+            else if (direction == '←' && monsterY == characterY && monsterX < characterX) {
                 it.remove();
-                System.out.println("擊殺怪物 at (" + m.getX() + ", " + m.getY() + ")");
-                m.die();
+                System.out.println("擊殺怪物 at (" + monsterX + ", " + monsterY + ")");
+                monster.die();
             }
 
             // 右邊方向：同一列，怪物在主角右邊
-            else if (direction == '→' && m.getY() == y && m.getX() > x) {
+            else if (direction == '→' && monsterY == characterY && monsterX > characterX) {
                 it.remove();
-                m.die();
-                System.out.println("擊殺怪物 at (" + m.getX() + ", " + m.getY() + ")");
-                m.die();
+                monster.die();
+                System.out.println("擊殺怪物 at (" + monsterX + ", " + monsterY + ")");
+                monster.die();
             } else if (i == monsters.size()){
                 System.out.println("沒有擊殺任何怪物");
             }
@@ -165,5 +180,20 @@ public class Character extends Object {
         }
     }
 
+    private void killMonster(Iterator<Monster> it, Monster monster) {
+        it.remove();
+        System.out.println("擊殺怪物 at (" + monster.getX() + ", " + monster.getY() + ")");
+        monster.die();
+    }
+
+
+    private boolean checkBlock(String key){
+
+        if (GameMap.occupiedCoordinates.containsKey(key)
+                && GameMap.occupiedCoordinates.get(key) instanceof Obstacle) {
+            return true;
+        }
+        return false;
+    }
 
 }
