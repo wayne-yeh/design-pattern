@@ -87,14 +87,14 @@ public class Monster extends Object {
             Object object = GameMap.occupiedCoordinates.get(nextPosition);
             if (object instanceof Treasure) {
                 System.out.println("觸碰到寶物了");
-                touch((Treasure) object, this);
+                touch((Treasure) object);
                 GameMap.occupiedCoordinates.remove(currentPosition);
                 GameMap.occupiedCoordinates.put(nextPosition, this);
             } else if (object instanceof Character) {
-                touchAndStay(currentX, currentY, c, object);
+                touchAndStay(currentX, currentY, object);
                 return;
             } else if (object instanceof Obstacle) {
-                touchAndStay(currentX, currentY, c, object);
+                touchAndStay(currentX, currentY, object);
                 return;
             }
         }
@@ -129,5 +129,18 @@ public class Monster extends Object {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    private void touch(Treasure treasure) {
+        this.setState(treasure.getState());
+        System.out.println("角色狀態已變更為: " + treasure.getState().getClass().getSimpleName());
+    }
+
+    private void touchAndStay(int currentX, int currentY, Object object) {
+        System.out.printf("觸碰「%s」了%n", object.getClass().getSimpleName());
+        System.out.println("停留在原地");
+        this.x = currentX;
+        this.y = currentY;
+        System.out.println("怪物現在位置: (" + x + ", " + y + ")");
     }
 }

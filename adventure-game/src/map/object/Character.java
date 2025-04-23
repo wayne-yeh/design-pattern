@@ -110,7 +110,7 @@ public class Character extends Object {
             Object object = GameMap.occupiedCoordinates.get(nextPosition);
             if (object instanceof Treasure) {
                 System.out.println("觸碰到寶物了");
-                touch((Treasure) object, this);
+                touch((Treasure) object);
                 GameMap.occupiedCoordinates.remove(currentPosition);
                 GameMap.occupiedCoordinates.put(nextPosition, this);
             } else if (object instanceof Monster) {
