@@ -2,18 +2,20 @@ package map.object;
 
 import map.GameMap;
 import map.Object;
-import map.object.state.Normal;
+import map.object.state.InvincibleState;
+import map.object.state.NormalState;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Monster extends Object {
+    public boolean isInvincible = false;
     String symbol = "M";
     int x = -1;
     int y = -1;
     int hp = 1;
     private static int idCounter = 1;
     private String name;
-    State state = new Normal();
+    State state = new NormalState();
 
     public Monster() {
         this.name = "怪物" + idCounter;
@@ -107,10 +109,17 @@ public class Monster extends Object {
         int cx = character.getX();
         int cy = character.getY();
 
+
+
         if (isAdjacentTo(character)) {
-            System.out.println("怪物攻擊主角！來自 (" + x + ", " + y + ") 減少50點生命值");
-            character.setHp(character.getHp() - 50);
-            System.out.println("主角目前的生命值為 "+ character.getHp());
+
+            if (!character.isInvincible) {
+                System.out.println("怪物攻擊主角！來自 (" + x + ", " + y + ") 減少50點生命值");
+                character.setHp(character.getHp() - 50);
+                System.out.println("主角目前的生命值為 " + character.getHp());
+            }
+
+            System.out.println("無敵狀態傷害不了主角");
         }
     }
 
@@ -142,5 +151,9 @@ public class Monster extends Object {
         this.x = currentX;
         this.y = currentY;
         System.out.println("怪物現在位置: (" + x + ", " + y + ")");
+    }
+
+    public State getState() {
+        return state;
     }
 }

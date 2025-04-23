@@ -3,7 +3,7 @@ package map.object;
 import game.Game;
 import map.GameMap;
 import map.Object;
-import map.object.state.Normal;
+import map.object.state.NormalState;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,9 +16,12 @@ public class Character extends Object {
     private int hp;
     private int x; // row
     private int y; // column
-    State state = new Normal();
+    State state = new NormalState();
+    public Boolean isInvincible = false;
+
     public int getX() {
         return x;
+
     }
 
     public void setX(int x) {
@@ -214,10 +217,14 @@ public class Character extends Object {
     }
 
     private boolean killMonster(Iterator<Monster> it, Monster monster) {
-        it.remove();
-        System.out.println("擊殺怪物 at (" + monster.getX() + ", " + monster.getY() + ")");
-        monster.die();
-        return true;
+        if (!monster.isInvincible) {
+            it.remove();
+            System.out.println("擊殺怪物 at (" + monster.getX() + ", " + monster.getY() + ")");
+            monster.die();
+            return true;
+        }
+        System.out.println("無敵狀態沒有殺死怪物");
+        return false;
     }
 
 

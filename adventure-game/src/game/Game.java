@@ -26,6 +26,7 @@ public class Game {
 
             System.out.print("請角色輸入方向（↑, ↓, ←, →）或 A 攻擊: ");
             char input = scanner.next().charAt(0);
+            character.getState().applyEffect(character);
 
             if (input == 'A') {
                 character.attack(monsters);
@@ -34,10 +35,6 @@ public class Game {
             }
 
             for (Monster monster: monsters) {
-                monster.checkMoveOrAttack(character);
-                monster.checkMoveOrAttack(character);
-                monster.checkMoveOrAttack(character);
-                monster.checkMoveOrAttack(character);
                 monster.checkMoveOrAttack(character);
 
             }

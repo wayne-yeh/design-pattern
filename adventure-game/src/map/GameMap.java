@@ -3,7 +3,7 @@ package map;
 import map.object.*;
 import map.object.Character;
 import map.object.location.Location;
-import map.object.state.Normal;
+import map.object.state.NormalState;
 
 import java.util.*;
 
@@ -52,7 +52,7 @@ public class GameMap {
 
         int defaultHp = 300;
         char defaultDirection = '→';
-        State defaultState = new Normal();
+        State defaultState = new NormalState();
 
 
         character.setX(location.getX());
