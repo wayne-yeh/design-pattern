@@ -16,7 +16,7 @@ public class TeleportState extends State {
     public void applyEffect(Character character) {
         Set<String> keys = GameMap.occupiedCoordinates.keySet();
         Random random = new Random();
-        int mapWidth = 10, mapHeight = 10; // 可改為傳入或使用 GameMap 提供
+        int mapWidth = GameMap.maxRow, mapHeight = GameMap.maxColumn;
         while (true) {
             int newX = random.nextInt(mapWidth);
             int newY = random.nextInt(mapHeight);
@@ -29,7 +29,13 @@ public class TeleportState extends State {
                 System.out.println("瞬身移動至 (" + newX + ", " + newY + ")");
                 break;
             }
+
+            if (isExpired()) {
+                System.out.println("狀態到期回復正常狀態");
+                character.setState(new NormalState());
+            }
         }
+
     }
 
     @Override

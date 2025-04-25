@@ -10,8 +10,13 @@ public class StockpileState extends State {
 
     @Override
     public void applyEffect(Character character) {
-        System.out.println("蓄力中... 回合剩餘：" + remainingTurns);
-        // 被打中可中斷效果 → 可透過角色被攻擊時做邏輯處理（外部邏輯）
+        System.out.println("蓄力中預計變成爆發");
+        decreaseTurn();
+        System.out.println("當前狀態：蓄力（剩餘 " + remainingTurns + " 回合）");
+        if (isExpired()) {
+            System.out.println("狀態到期回復爆發狀態");
+            character.setState(new EruptingState());
+        }
     }
 
     @Override

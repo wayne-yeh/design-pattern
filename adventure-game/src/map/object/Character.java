@@ -3,7 +3,7 @@ package map.object;
 import game.Game;
 import map.GameMap;
 import map.Object;
-import map.object.state.NormalState;
+import map.object.state.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -11,13 +11,25 @@ import java.util.List;
 
 public class Character extends Object {
 
+    public final int maxHp = 300;
+    public boolean isTwoAction = false;
+    public boolean isInvincible = false;
+    public char[] isLimitedAction;
+    public boolean isAttackNoLimit = false;
+
     String symbol = "↑→↓←";
     char direction;
     private int hp;
     private int x; // row
     private int y; // column
-    State state = new NormalState();
-    public Boolean isInvincible = false;
+    State state;
+
+    public Character() {
+        this.state = new StockpileState();
+        this.hp = 300;
+        this.direction = '→';
+    }
+
 
     public int getX() {
         return x;
@@ -81,7 +93,8 @@ public class Character extends Object {
         int currentY = this.y;
         String currentPosition = this.x + "," + this.y;
 
-            switch (c) {
+        switch (c) {
+
                 case '↑':
                     y++;
                     break;
@@ -95,8 +108,8 @@ public class Character extends Object {
                     x++;
                     break;
                 default:
-                System.out.println("無效指令: " + c);
-            }
+                    System.out.println("無效指令: " + c);
+        }
 
         if (x < 0 || x > GameMap.maxRow || y < 0 || y > GameMap.maxColumn) {
             System.out.println("無法移動：超出地圖邊界");
@@ -162,7 +175,10 @@ public class Character extends Object {
             int monsterY = monster.getY();
 
             boolean blocked = false;
-            if (direction == '↑' && monsterX == characterX && monsterY > characterY) {
+            if (this.isAttackNoLimit) {
+                killed = killMonster(it, monster);
+                break;
+            } else if (direction == '↑' && monsterX == characterX && monsterY > characterY) {
                 for (int y = characterY + 1; y < monsterY; y++) {
                     String eachPos = characterX + "," + y;
                     blocked = checkBlock(eachPos);
@@ -238,5 +254,20 @@ public class Character extends Object {
         }
         return false;
     }
+
+    public void applyStateEffect() {
+        if (state != null) {
+            state.applyEffect(this);
+        }
+    }
+
+    public void underAttack() {
+        this.setHp(this.getHp() - 50);
+        if (this.state.shouldAttackBecomeNormal()) {
+            System.out.println("此狀態"+this.state.getClass().getSimpleName()+"遭受攻擊會變回正常狀態");
+            this.setState(new NormalState());
+        }
+    }
+
 
 }

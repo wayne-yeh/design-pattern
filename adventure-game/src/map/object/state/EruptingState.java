@@ -10,8 +10,14 @@ public class EruptingState extends State {
 
     @Override
     public void applyEffect(Character character) {
-        System.out.println("爆發狀態中！攻擊會對全場造成 50 傷害！");
-        // 由攻擊邏輯觸發全場攻擊（character.attackAllEnemies()）時判斷
+        System.out.println("爆發狀態中 無地圖 無差別 攻擊");
+        decreaseTurn();
+        System.out.println("當前狀態：爆發（剩餘 " + remainingTurns + " 回合）");
+        character.isAttackNoLimit = true;
+        if (isExpired()) {
+            System.out.println("狀態到期回復瞬身狀態");
+            character.setState(new TeleportState());
+        }
     }
 
     @Override

@@ -19,7 +19,6 @@ public class GameMap {
     List<Monster> monsters = new ArrayList<>();
 
     public static Map<String, Object> occupiedCoordinates = new HashMap<>();
-    List<Treasure> generatedTreasures = new ArrayList<>();
     List<Treasure> registeredTreasures = new ArrayList<>();
 
     public GameMap(int row, int column, List<Treasure> treasures) {
@@ -49,18 +48,8 @@ public class GameMap {
         character = new Character();
         Location location = getRandomAndSaveLocation(character);
 
-
-        int defaultHp = 300;
-        char defaultDirection = '→';
-        State defaultState = new NormalState();
-
-
         character.setX(location.getX());
         character.setY(location.getY());
-
-        character.setHp(defaultHp);
-        character.setState(defaultState);
-        character.setDirection(defaultDirection);
         System.out.println("角色: " + character.getClass().getSimpleName() + " at (" + character.getX() + ", " + character.getY() + ")");
         System.out.println("角色的HP : " + character.getHp());
         System.out.println("角色的面向 : " + character.getDirection());

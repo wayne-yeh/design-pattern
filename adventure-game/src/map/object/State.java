@@ -23,5 +23,11 @@ public abstract class State {
     public abstract void applyEffect(Character character);
 
     public abstract String getName();
+
+    public Boolean shouldAttackBecomeNormal() {
+        return false;
+    }
+
+
 }
 

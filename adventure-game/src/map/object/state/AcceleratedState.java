@@ -10,12 +10,25 @@ public class AcceleratedState extends State {
 
     @Override
     public void applyEffect(Character character) {
-        // 不實作，應由 game loop 決定允許兩次行動
+        character.isTwoAction = true;
+        decreaseTurn();
+        System.out.println("當前狀態：加速（剩餘 " + remainingTurns + " 回合）");
+        if (isExpired()) {
+            System.out.println("狀態到期回復正常狀態");
+            character.setState(new NormalState());
+        }
     }
 
     @Override
     public String getName() {
         return "Accelerated";
     }
+
+    @Override
+    public Boolean shouldAttackBecomeNormal() {
+        return true;
+    }
+
+
 }
 

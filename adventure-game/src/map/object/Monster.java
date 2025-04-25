@@ -85,7 +85,6 @@ public class Monster extends Object {
         }
 
         if (GameMap.occupiedCoordinates.containsKey(nextPosition)) {
-            System.out.println("enter");
             Object object = GameMap.occupiedCoordinates.get(nextPosition);
             if (object instanceof Treasure) {
                 System.out.println("觸碰到寶物了");
@@ -115,11 +114,12 @@ public class Monster extends Object {
 
             if (!character.isInvincible) {
                 System.out.println("怪物攻擊主角！來自 (" + x + ", " + y + ") 減少50點生命值");
-                character.setHp(character.getHp() - 50);
+                character.underAttack();
                 System.out.println("主角目前的生命值為 " + character.getHp());
-            }
+            } else {
 
-            System.out.println("無敵狀態傷害不了主角");
+                System.out.println("無敵狀態傷害不了主角");
+            }
         }
     }
 

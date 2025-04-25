@@ -11,7 +11,11 @@ public class NormalState extends State {
 
     @Override
     public void applyEffect(Character character) {
-        System.out.println("no effect");
+        character.isTwoAction =false;
+        character.isInvincible = false;
+        character.isAttackNoLimit = false;
+        character.isLimitedAction = null;
+        System.out.println("目前為正常狀態");
     }
 
     @Override

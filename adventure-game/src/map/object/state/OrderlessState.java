@@ -17,9 +17,20 @@ public class OrderlessState extends State {
 
     @Override
     public void applyEffect(Character character) {
-        effectType = new Random().nextInt(2) + 1; // 每回合刷新效果
-        String typeStr = effectType == 1 ? "只能上下移動" : "只能左右移動";
-        System.out.println("混亂狀態效果觸發：" + typeStr);
+        boolean onlyUpDown = new Random().nextBoolean();
+
+        if (onlyUpDown) {
+            character.isLimitedAction = new char[]{'↑', '↓'};
+            System.out.println("混亂狀態效果觸發：" + "只能上下移動");
+        } else {
+            character.isLimitedAction = new char[]{'→', '←'};
+            System.out.println("混亂狀態效果觸發：" + "只能左右移動");
+        }
+
+        if (isExpired()) {
+            System.out.println("狀態到期回復正常狀態");
+            character.setState(new NormalState());
+        }
     }
 
     @Override
