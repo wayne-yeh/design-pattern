@@ -16,7 +16,7 @@ public class Character extends Object {
     char direction;
 
     public Character() {
-        super.state = new StockpileState();
+        super.state = new NormalState();
         this.hp = 300;
         this.direction = '→';
     }
@@ -42,20 +42,8 @@ public class Character extends Object {
         Game.isGameOver = true;
     }
 
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
     public char getDirection() {
         return direction;
-    }
-
-    public void setDirection(char direction) {
-        this.direction = direction;
     }
 
     public void move(char c) {

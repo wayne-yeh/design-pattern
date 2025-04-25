@@ -2,9 +2,10 @@ package map.object;
 
 import map.GameMap;
 import map.Object;
-import map.object.state.InvincibleState;
 import map.object.state.NormalState;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Monster extends Object {
@@ -24,13 +25,22 @@ public class Monster extends Object {
         return name;
     }
 
-    public void checkMoveOrAttack(Character character){
+    public void checkMoveOrAttack(Character character, List<Monster> monsters){
 
         if (isAdjacentTo(character)) {
-            attack(character);
+            attack(character, monsters);
         } else {
             move();
         }
+
+        if (isTwoAction) {
+            if (isAdjacentTo(character)) {
+                attack(character, monsters);
+            } else {
+                move();
+            }
+        }
+
     }
 
     public void move() {
@@ -54,6 +64,15 @@ public class Monster extends Object {
                 x++;
                 break;
         }
+
+        char[] allowed = this.isLimitedAction;
+        if (allowed != null && new String(allowed).indexOf(c) == -1) {
+            System.out.println(this.name + " 因受限制不能往 " + c + " 移動");
+            x = currentX;
+            y = currentY;
+            return;
+        }
+
         String nextPosition = this.x + "," + this.y;
         if (x < 0 || x > GameMap.maxRow || y < 0 || y > GameMap.maxColumn) {
             System.out.println("無法移動：超出地圖邊界");
@@ -83,12 +102,25 @@ public class Monster extends Object {
         GameMap.occupiedCoordinates.put(nextPosition, this);
         System.out.println("怪物:"+ this.getName() +", 現在位置: (" + x + ", " + y + ")");
     }
-    public void attack(Character character) {
+    public void attack(Character character, List<Monster> monsters) {
         int cx = character.getX();
         int cy = character.getY();
+        if (this.isAttackNoLimit) {
+            Iterator<Monster> it = monsters.iterator();
+            while (it.hasNext()) {
+                Monster monster = it.next();
 
+                if (monster != this) {
+                    killMonster(it, monster);
+                }
+            }
+            attackCharacter(character);
+        }
 
+        attackCharacter(character);
+    }
 
+    public void attackCharacter(Character character){
         if (isAdjacentTo(character)) {
 
             if (!character.isInvincible) {
@@ -134,5 +166,14 @@ public class Monster extends Object {
 
     public State getState() {
         return state;
+    }
+    private void killMonster(Iterator<Monster> it, Monster monster) {
+        if (!monster.isInvincible) {
+            it.remove();
+            System.out.println("擊殺怪物 at (" + monster.getX() + ", " + monster.getY() + ")");
+            monster.die();
+            return;
+        }
+        System.out.println("無敵狀態沒有殺死怪物");
     }
 }

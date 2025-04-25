@@ -13,14 +13,15 @@ import java.util.Scanner;
 public class Game {
 
     static List<Treasure> registerTreasures = new ArrayList<>();
+    List<Monster> monsters = new ArrayList<>();
     public static boolean isGameOver = false;
     public void start(){
 
         registerTreasures();
-        GameMap map = new GameMap(3, 3, registerTreasures);
+        GameMap map = new GameMap(10, 10, registerTreasures);
         Scanner scanner = new Scanner(System.in);
         Character character = map.getCharacter();
-        List<Monster> monsters = map.getMonsters();
+        monsters= map.getMonsters();
 
         while (true) {
 
@@ -40,13 +41,12 @@ public class Game {
 
             if (input == '↑' || input == '↓' || input == '←' || input == '→') {
                 character.move(input);
-            } else if (input == 'A') {
+            } else {
                 character.attack(monsters);
             }
 
 
             if (character.isTwoAction) {
-
                 System.out.println("加速狀態再多執行一次動作");
                 System.out.print("請角色輸入方向（↑, ↓, ←, →）或 A 攻擊: ");
                 char input2 = scanner.next().charAt(0);
@@ -62,12 +62,29 @@ public class Game {
             }
 
             for (Monster monster: monsters) {
-                monster.checkMoveOrAttack(character);
-
+                monster.checkMoveOrAttack(character, monsters);
             }
 
+            isGameOver = checkMonsterLeft();
+
+            if(isGameOver) {
+                System.out.println("遊戲結束");
+                break;
+            }
+
+            map.generateTreasure();
+            map.getMonsters();
         }
 
+    }
+
+    private boolean checkMonsterLeft() {
+
+        if (this.monsters.isEmpty()) {
+            System.out.println("沒有怪物 遊戲即將結束");
+            return true;
+        }
+        return false;
     }
 
     private static void registerTreasures() {

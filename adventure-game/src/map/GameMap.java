@@ -36,7 +36,7 @@ public class GameMap {
         generateCharacter();
     }
 
-    private void generateObstacle(){
+    public void generateObstacle(){
         obstacle = new Obstacle();
         Location location = getRandomAndSaveLocation(obstacle);
         obstacle.setX(location.getX());
@@ -44,7 +44,7 @@ public class GameMap {
         System.out.println("生成障礙物: " + obstacle.getClass().getSimpleName() + " at (" + obstacle.getX() + ", " + obstacle.getY() + ")");
     }
 
-    private void generateCharacter() {
+    public void generateCharacter() {
         character = new Character();
         Location location = getRandomAndSaveLocation(character);
 
@@ -59,7 +59,7 @@ public class GameMap {
 
 
 
-    private void generateMonster() {
+    public void generateMonster() {
         Monster monster = new Monster();
         Location location = getRandomAndSaveLocation(monster);
 
@@ -69,7 +69,7 @@ public class GameMap {
         monsters.add(monster);
     }
 
-    private void generateTreasure(){
+    public void generateTreasure(){
         Collections.shuffle(registeredTreasures);
         int i = 1;
         int x, y = -1;
