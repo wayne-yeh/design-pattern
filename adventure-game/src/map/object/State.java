@@ -1,4 +1,5 @@
 package map.object;
+import map.Object;
 
 public abstract class State {
 
@@ -20,7 +21,7 @@ public abstract class State {
         return remainingTurns <= 0;
     }
 
-    public abstract void applyEffect(Character character);
+    public abstract void applyEffect(Object object);
 
     public abstract String getName();
 

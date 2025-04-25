@@ -10,9 +10,11 @@ public abstract class Object {
     public boolean isInvincible = false;
     public char[] isLimitedAction;
     public boolean isAttackNoLimit = false;
+    public int maxHp;
     protected State state;
     protected int x; // row
     protected int y; // column
+    protected int hp;
 
     public State getState() {
         return state;
@@ -35,6 +37,14 @@ public abstract class Object {
     public void setY(int y) {
         this.y = y;
     }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+
+    };
 
     protected void touch(Treasure treasure) {
         this.setState(treasure.getState());

@@ -2,6 +2,7 @@ package map.object.state;
 
 import map.object.State;
 import map.object.Character;
+import map.Object;
 
 import java.util.Random;
 
@@ -16,20 +17,20 @@ public class OrderlessState extends State {
     }
 
     @Override
-    public void applyEffect(Character character) {
+    public void applyEffect(Object object) {
         boolean onlyUpDown = new Random().nextBoolean();
 
         if (onlyUpDown) {
-            character.isLimitedAction = new char[]{'↑', '↓'};
+            object.isLimitedAction = new char[]{'↑', '↓'};
             System.out.println("混亂狀態效果觸發：" + "只能上下移動");
         } else {
-            character.isLimitedAction = new char[]{'→', '←'};
+            object.isLimitedAction = new char[]{'→', '←'};
             System.out.println("混亂狀態效果觸發：" + "只能左右移動");
         }
 
         if (isExpired()) {
             System.out.println("狀態到期回復正常狀態");
-            character.setState(new NormalState());
+            object.setState(new NormalState());
         }
     }
 

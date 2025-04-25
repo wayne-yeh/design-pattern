@@ -14,7 +14,6 @@ public class Character extends Object {
     public final int maxHp = 300;
     String symbol = "↑→↓←";
     char direction;
-    private int hp;
 
     public Character() {
         super.state = new StockpileState();
@@ -22,10 +21,7 @@ public class Character extends Object {
         this.direction = '→';
     }
 
-    public int getHp() {
-        return hp;
-    }
-
+    @Override
     public void setHp(int hp) {
         if (hp > 300) {
             throw new IllegalArgumentException("生命值不能大於300");

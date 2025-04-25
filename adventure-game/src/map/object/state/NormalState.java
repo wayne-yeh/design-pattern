@@ -1,7 +1,7 @@
 package map.object.state;
 
 import map.object.State;
-import map.object.Character;
+import map.Object;
 
 public class NormalState extends State {
 
@@ -10,11 +10,11 @@ public class NormalState extends State {
     }
 
     @Override
-    public void applyEffect(Character character) {
-        character.isTwoAction =false;
-        character.isInvincible = false;
-        character.isAttackNoLimit = false;
-        character.isLimitedAction = null;
+    public void applyEffect(Object object) {
+        object.isTwoAction =false;
+        object.isInvincible = false;
+        object.isAttackNoLimit = false;
+        object.isLimitedAction = null;
         System.out.println("目前為正常狀態");
     }
 

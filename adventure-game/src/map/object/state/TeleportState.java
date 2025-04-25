@@ -2,7 +2,7 @@ package map.object.state;
 
 import map.GameMap;
 import map.object.State;
-import map.object.Character;
+import map.Object;
 
 import java.util.Random;
 import java.util.Set;
@@ -13,7 +13,7 @@ public class TeleportState extends State {
     }
 
     @Override
-    public void applyEffect(Character character) {
+    public void applyEffect(Object object) {
         Set<String> keys = GameMap.occupiedCoordinates.keySet();
         Random random = new Random();
         int mapWidth = GameMap.maxRow, mapHeight = GameMap.maxColumn;
@@ -22,17 +22,17 @@ public class TeleportState extends State {
             int newY = random.nextInt(mapHeight);
             String key = newX + "," + newY;
             if (!GameMap.occupiedCoordinates.containsKey(key)) {
-                GameMap.occupiedCoordinates.remove(character.getX() + "," + character.getY());
-                character.setX(newX);
-                character.setY(newY);
-                GameMap.occupiedCoordinates.put(key, character);
+                GameMap.occupiedCoordinates.remove(object.getX() + "," + object.getY());
+                object.setX(newX);
+                object.setY(newY);
+                GameMap.occupiedCoordinates.put(key, object);
                 System.out.println("瞬身移動至 (" + newX + ", " + newY + ")");
                 break;
             }
 
             if (isExpired()) {
                 System.out.println("狀態到期回復正常狀態");
-                character.setState(new NormalState());
+                object.setState(new NormalState());
             }
         }
 

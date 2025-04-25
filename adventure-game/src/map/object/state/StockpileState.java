@@ -1,7 +1,7 @@
 package map.object.state;
 
 import map.object.State;
-import map.object.Character;
+import map.Object;
 
 public class StockpileState extends State {
     public StockpileState() {
@@ -9,13 +9,13 @@ public class StockpileState extends State {
     }
 
     @Override
-    public void applyEffect(Character character) {
+    public void applyEffect(Object object) {
         System.out.println("蓄力中預計變成爆發");
         decreaseTurn();
         System.out.println("當前狀態：蓄力（剩餘 " + remainingTurns + " 回合）");
         if (isExpired()) {
             System.out.println("狀態到期回復爆發狀態");
-            character.setState(new EruptingState());
+            object.setState(new EruptingState());
         }
     }
 

@@ -10,13 +10,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Monster extends Object {
     String symbol = "M";
 
-    int hp = 1;
     private static int idCounter = 1;
     private String name;
     State state = new NormalState();
 
     public Monster() {
         this.name = "怪物" + idCounter;
+        setHp(1);
         idCounter++;
     }
 
@@ -117,6 +117,11 @@ public class Monster extends Object {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    @Override
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 
     protected void touchAndStay(int currentX, int currentY, Object object) {

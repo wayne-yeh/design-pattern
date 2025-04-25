@@ -1,7 +1,7 @@
 package map.object.state;
 
 import map.object.State;
-import map.object.Character;
+import map.Object;
 
 public class EruptingState extends State {
     public EruptingState() {
@@ -9,14 +9,14 @@ public class EruptingState extends State {
     }
 
     @Override
-    public void applyEffect(Character character) {
+    public void applyEffect(Object object) {
         System.out.println("爆發狀態中 無地圖 無差別 攻擊");
         decreaseTurn();
         System.out.println("當前狀態：爆發（剩餘 " + remainingTurns + " 回合）");
-        character.isAttackNoLimit = true;
+        object.isAttackNoLimit = true;
         if (isExpired()) {
             System.out.println("狀態到期回復瞬身狀態");
-            character.setState(new TeleportState());
+            object.setState(new TeleportState());
         }
     }
 
