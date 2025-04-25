@@ -8,10 +8,8 @@ import map.object.state.NormalState;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Monster extends Object {
-    public boolean isInvincible = false;
     String symbol = "M";
-    int x = -1;
-    int y = -1;
+
     int hp = 1;
     private static int idCounter = 1;
     private String name;
@@ -21,28 +19,9 @@ public class Monster extends Object {
         this.name = "怪物" + idCounter;
         idCounter++;
     }
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void checkMoveOrAttack(Character character){
@@ -140,12 +119,7 @@ public class Monster extends Object {
         this.state = state;
     }
 
-    private void touch(Treasure treasure) {
-        this.setState(treasure.getState());
-        System.out.println("角色狀態已變更為: " + treasure.getState().getClass().getSimpleName());
-    }
-
-    private void touchAndStay(int currentX, int currentY, Object object) {
+    protected void touchAndStay(int currentX, int currentY, Object object) {
         System.out.printf("觸碰「%s」了%n", object.getClass().getSimpleName());
         System.out.println("停留在原地");
         this.x = currentX;

@@ -12,40 +12,14 @@ import java.util.List;
 public class Character extends Object {
 
     public final int maxHp = 300;
-    public boolean isTwoAction = false;
-    public boolean isInvincible = false;
-    public char[] isLimitedAction;
-    public boolean isAttackNoLimit = false;
-
     String symbol = "↑→↓←";
     char direction;
     private int hp;
-    private int x; // row
-    private int y; // column
-    State state;
 
     public Character() {
-        this.state = new StockpileState();
+        super.state = new StockpileState();
         this.hp = 300;
         this.direction = '→';
-    }
-
-
-    public int getX() {
-        return x;
-
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public int getHp() {
@@ -144,11 +118,6 @@ public class Character extends Object {
         direction = c;
         System.out.println("角色現在面向:" + direction);
         System.out.println("角色現在位置: (" + x + ", " + y + ")");
-    }
-
-    private void touch(Treasure treasure) {
-        this.setState(treasure.getState());
-        System.out.println("角色狀態已變更為: " + treasure.getState().getClass().getSimpleName());
     }
 
     private void touchAndStay(int currentX, int currentY, char c, Object object) {
