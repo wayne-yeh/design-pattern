@@ -1,0 +1,77 @@
+package rpg.core;
+
+import rpg.battle.Battle;
+import rpg.skills.Action;
+import rpg.skills.BasicAttack;
+import rpg.units.Unit;
+import java.util.List;
+import java.util.ArrayList;
+
+/**
+ * AI 決策提供者
+ */
+public class AiDecisionProvider implements DecisionProvider {
+    private int seed = 0;
+
+    @Override
+    public Action chooseAction(Unit unit, Battle battle) {
+        List<Action> availableActions = new ArrayList<>();
+
+        // 添加普通攻擊
+        availableActions.add(new BasicAttack());
+
+        // 添加技能
+        availableActions.addAll(unit.getSkills());
+
+        while (true) {
+            int actionIndex = seed % availableActions.size();
+            Action chosen = availableActions.get(actionIndex);
+
+            if (unit.hasEnoughMp(chosen.mpCost())) {
+                seed++; // 只有在成功選擇行動後才增加 seed
+                return chosen;
+            } else {
+                System.out.println("你缺乏 MP，不能進行此行動。");
+                // 重新顯示選項
+                System.out.print("選擇行動：");
+                for (int i = 0; i < availableActions.size(); i++) {
+                    System.out.print("(" + i + ") " + availableActions.get(i).name());
+                    if (i < availableActions.size() - 1) {
+                        System.out.print(" ");
+                    }
+                }
+                System.out.println();
+                seed++; // MP 不足時也要增加 seed
+                // 如果 MP 不足，繼續下一次循環
+            }
+        }
+    }
+
+    @Override
+    public List<Unit> chooseTargets(Unit unit, List<Unit> candidates, int needed) {
+        List<Unit> selected = new ArrayList<>();
+
+        if (candidates.isEmpty() || needed <= 0) {
+            return selected;
+        }
+
+        for (int i = 0; i < needed; i++) {
+            int targetIndex = (seed + i) % candidates.size();
+            Unit target = candidates.get(targetIndex);
+            if (!selected.contains(target)) {
+                selected.add(target);
+            }
+        }
+
+        seed++; // 選完所有目標後才 +1
+        return selected;
+    }
+
+    public int getSeed() {
+        return seed;
+    }
+
+    public void setSeed(int seed) {
+        this.seed = seed;
+    }
+}

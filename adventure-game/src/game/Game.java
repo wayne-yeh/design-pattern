@@ -73,7 +73,7 @@ public class Game {
             }
 
             map.generateTreasure();
-            map.getMonsters();
+            map.generateMonster();
         }
 
     }

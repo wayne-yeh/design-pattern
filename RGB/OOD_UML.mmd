@@ -1,0 +1,119 @@
+classDiagram
+direction TB
+
+class DecisionProvider {
+  <<interface>>
+  +chooseAction(u:Unit, ctx:Battle): Action
+  +chooseTargets(u:Unit, cand:List<Unit>, need:int): List<Unit>
+}
+
+class AiDecisionProvider
+class HeroDecisionProvider
+
+DecisionProvider <|.. AiDecisionProvider
+DecisionProvider <|.. HeroDecisionProvider
+Unit "1" o-- "1" DecisionProvider
+
+%% State Pattern
+class State {
+  <<interface>>
+  +onTurnStart(u:Unit, ctx:Battle): void
+  +onReceiveDamage(u:Unit, amount:int, src:Unit, ctx:Battle): int
+  +ticksRemaining(): int
+  +tickDown(): void
+}
+State <|.. NormalState
+State <|.. PetrochemicalState
+State <|.. PoisonedState
+State <|.. CheerupState
+
+%% Skill as Strategy + Targeting Policy
+class Skill {
+  <<interface>>
+  +name(): String
+  +mpCost(): int
+  +targetSpec(): TargetSpec
+  +execute(caster:Unit, targets:List<Unit>, ctx:Battle): void
+}
+
+class TargetingPolicy {
+  <<interface>>
+  +candidates(caster:Unit, ctx:Battle): List<Unit>
+  +select(caster:Unit, cand:List<Unit>, need:int, dp:DecisionProvider): List<Unit>
+}
+
+class AllEnemiesPolicy
+class OneEnemyPolicy
+class SelfPolicy
+class NAlliesPolicy
+TargetingPolicy <|.. AllEnemiesPolicy
+TargetingPolicy <|.. OneEnemyPolicy
+TargetingPolicy <|.. SelfPolicy
+TargetingPolicy <|.. NAlliesPolicy
+
+Skill --> TargetingPolicy : uses
+
+%% Damage Policy (for Cheerup bonus, etc.)
+class DamagePolicy {
+  <<interface>>
+  +compute(base:int, src:Unit, target:Unit, ctx:Battle): int
+}
+class DefaultDamagePolicy
+DamagePolicy <|.. DefaultDamagePolicy
+Battle "1" o-- "1" DamagePolicy
+
+%% Observer for death events (Curse & Summon heal)
+class DeathBus {
+  +subscribe(l:DeathListener): void
+  +notifyDeath(dead:Unit, killer:Unit, ctx:Battle): void
+}
+class DeathListener {
+  <<interface>>
+  +onDeath(dead:Unit, killer:Unit, ctx:Battle): void
+}
+class CurseTracker
+class SummonHealRule
+DeathListener <|.. CurseTracker
+DeathListener <|.. SummonHealRule
+DeathBus o--> DeathListener
+
+%% Concrete skills (extensible via OCP)
+Skill <|.. BasicAttack
+Skill <|.. Waterball
+Skill <|.. Fireball
+Skill <|.. SelfHealing
+Skill <|.. Petrochemical
+Skill <|.. Poison
+Skill <|.. Summon
+Skill <|.. SelfExplosion
+Skill <|.. Cheerup
+Skill <|.. Curse
+Skill <|.. OnePunch
+
+%% OnePunch uses rule set (Chain of Responsibility)
+class OnePunchRule {
+  <<interface>>
+  +applies(target:Unit, ctx:Battle): boolean
+  +apply(caster:Unit, target:Unit, ctx:Battle): void
+}
+class HighHpRule
+class BadStateRule
+class CheerupRule
+class NormalRule
+OnePunchRule <|.. HighHpRule
+OnePunchRule <|.. BadStateRule
+OnePunchRule <|.. CheerupRule
+OnePunchRule <|.. NormalRule
+class OnePunch
+OnePunch --> "1..*" OnePunchRule : rules in order
+
+%% Battle aggregates
+class Battle {
+  -turnQueue: Queue<Unit>
+  +start(): void
+  +step(): void
+}
+Battle o-- Troop
+Battle o-- DeathBus
+Battle o-- CurseTracker
+Battle o-- SummonHealRule

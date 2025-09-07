@@ -1,0 +1,154 @@
+classDiagram
+direction LR
+
+class Battle {
+  -round: int
+  +start(): void
+  +nextTurn(): void
+  +isOver(): boolean
+}
+
+class Troop {
+  +id: int
+  +name: string
+  +isAnnihilated(): boolean
+  +livingUnits(): List<Unit>
+}
+
+class Unit {
+  +id: int
+  +name: string
+  +hp: int
+  +mp: int
+  +str: int
+  +state: State
+  +skills: List<Skill>
+  +isAlive(): boolean
+  +receiveDamage(amount:int): void
+  +heal(amount:int): void
+  +consumeMp(amount:int): void
+}
+
+
+
+class State {
+  <<interface>>
+  +name(): String
+  +onTurnStart(u:Unit, ctx:Battle): void
+  +onBeforeAct(u:Unit, ctx:Battle): void
+  +onAfterAct(u:Unit, ctx:Battle): void
+  +onReceiveDamage(u:Unit, amount:int, src:Unit, ctx:Battle): int
+  +ticksRemaining(): int
+  +tickDown(): void
+}
+
+class NormalState
+class PetrochemicalState
+class PoisonedState
+class CheerupState
+
+class Action {
+  <<value object>>
+  +type: ActionType  // BASIC_ATTACK or SKILL
+  +skill?: Skill
+}
+
+class Skill {
+  <<interface>>
+  +name(): String
+  +mpCost(): int
+  +targetSpec(): TargetSpec
+  +execute(caster:Unit, targets:List<Unit>, ctx:Battle): void
+}
+
+class TargetSpec {
+  <<value object>>
+  +targetSide: TargetSide   // SELF, ALLY, ENEMY, ALL
+  +count: int               // 0: system-decided/all
+  +requiresSelection(): boolean
+}
+
+class BasicAttack
+
+class Waterball
+class Fireball
+class SelfHealing
+class Petrochemical
+class Poison
+class Summon
+class SelfExplosion
+class Cheerup
+class Curse
+class OnePunch
+
+class AIDecider {
+  <<entity>>
+  +seed:int
+  +chooseAction(u:Unit, ctx:Battle): Action
+  +chooseTargets(u:Unit, cand:List<Unit>, need:int): List<Unit>
+}
+
+class HeroDecider {
+  <<entity>>
+  +decisions: Queue<List<int>>
+  +chooseAction(u:Unit, ctx:Battle): Action
+  +chooseTargets(u:Unit, cand:List<Unit>, need:int): List<Unit>
+}
+
+class DeathBus {
+  <<domain service>>
+  +subscribe(listener:DeathListener): void
+  +notifyDeath(dead:Unit, killer:Unit, ctx:Battle): void
+}
+
+class DeathListener {
+  <<interface>>
+  +onDeath(dead:Unit, killer:Unit, ctx:Battle): void
+}
+
+class CurseTracker {
+  <<domain service>>
+  +curse(victim:Unit, caster:Unit): void
+  +onDeath(dead:Unit, killer:Unit, ctx:Battle): void
+}
+
+class SummonRule {
+  <<domain service>>
+  +summonSlime(owner:Unit, ctx:Battle): Unit
+  +onDeath(dead:Unit, killer:Unit, ctx:Battle): void
+}
+
+Battle "1" o-- "2" Troop
+Troop "1" o-- "1..*" Unit
+Unit <|-- Hero
+
+Unit "1" *-- "1" State
+State <|-- NormalState
+State <|-- PetrochemicalState
+State <|-- PoisonedState
+State <|-- CheerupState
+
+Unit "1" o-- "0..*" Skill
+Skill <|-- BasicAttack
+Skill <|-- Waterball
+Skill <|-- Fireball
+Skill <|-- SelfHealing
+Skill <|-- Petrochemical
+Skill <|-- Poison
+Skill <|-- Summon
+Skill <|-- SelfExplosion
+Skill <|-- Cheerup
+Skill <|-- Curse
+Skill <|-- OnePunch
+
+Skill "1" --> "1" TargetSpec
+
+AIDecider ..> Unit
+HeroDecider ..> Unit
+
+DeathBus <|.. DeathListener
+CurseTracker ..|> DeathListener
+SummonRule ..|> DeathListener
+Battle "1" o-- "1" DeathBus
+Battle "1" o-- "1" CurseTracker
+Battle "1" o-- "1" SummonRule

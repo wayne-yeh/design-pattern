@@ -1,0 +1,16 @@
+sequenceDiagram
+autonumber
+participant AI as AiDecisionProvider(seed)
+participant U as Unit
+participant B as Battle
+
+AI->>AI: idx = seed % (1 + skills.size) // 含普通攻擊
+AI-->>U: Action(按 idx)
+AI->>AI: seed = seed + 1 (只有在選到合法行動後)
+opt 需選目標 (m > 0 且 cand.size > m)
+  AI->>B: cand = 列舉合法候選(排序固定)
+  loop j from 0..m-1
+    AI->>AI: pick cand[(seed + j) % cand.size]
+  end
+  AI->>AI: seed = seed + 1 (選完全部目標後才 +1)
+end
