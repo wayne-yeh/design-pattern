@@ -97,17 +97,14 @@ public class Battle {
             return;
         }
 
-        // S1: 選擇行動
         Action action = chooseAction(currentUnit);
         if (action == null) {
             initializeTurnQueue();
             return;
         }
 
-        // S2: 選擇目標
         List<Unit> targets = chooseTargets(currentUnit, action);
 
-        // S3: 執行行動
         currentUnit.consumeMp(action.mpCost());
         action.execute(currentUnit, targets, this);
 
@@ -123,15 +120,12 @@ public class Battle {
     private Action chooseAction(Unit unit) {
         List<Action> availableActions = new ArrayList<>();
 
-        // 添加普通攻擊 (始終可用，MP消耗為0)
         availableActions.add(new rpg.skills.BasicAttack());
 
-        // 添加技能
         for (Action skill : unit.getSkills()) {
             availableActions.add(skill);
         }
 
-        // 顯示選項
         System.out.print("選擇行動：");
         for (int i = 0; i < availableActions.size(); i++) {
             System.out.print("(" + i + ") " + availableActions.get(i).name());

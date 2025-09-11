@@ -5,9 +5,6 @@ import rpg.core.DecisionProvider;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 所有角色目標策略（自爆技能使用）
- */
 public class AllUnitsPolicy implements TargetingPolicy {
 
     @Override
@@ -19,7 +16,7 @@ public class AllUnitsPolicy implements TargetingPolicy {
 
     @Override
     public List<Unit> select(Unit caster, List<Unit> candidates, int needed, DecisionProvider decisionProvider) {
-        return candidates; // 所有角色
+        return candidates;
     }
 }
 

@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.LinkedList;
 
-/**
- * 英雄決策提供者
- */
 public class HeroDecisionProvider implements DecisionProvider {
     private Queue<String> decisions;
 
@@ -26,7 +23,7 @@ public class HeroDecisionProvider implements DecisionProvider {
         availableActions.addAll(unit.getSkills());
 
         if (decisions.isEmpty()) {
-            // 如果沒有更多決策，默認選擇普通攻擊
+
             System.out.print("請輸入行動選擇 (數字): ");
             return new BasicAttack();
         }
@@ -40,14 +37,13 @@ public class HeroDecisionProvider implements DecisionProvider {
         }
         System.out.print("): ");
         String decision = decisions.poll();
-        System.out.println(decision); // 顯示輸入的值
+        System.out.println(decision);
         int actionIndex = Integer.parseInt(decision.trim());
 
         if (actionIndex >= 0 && actionIndex < availableActions.size()) {
             return availableActions.get(actionIndex);
         }
 
-        // 如果索引無效，返回普通攻擊
         return new BasicAttack();
     }
 
@@ -60,7 +56,6 @@ public class HeroDecisionProvider implements DecisionProvider {
         }
 
         if (decisions.isEmpty()) {
-            // 如果沒有更多決策，選擇前面的目標
             System.out.print("請輸入目標選擇 (數字，用逗號分隔): ");
             for (int i = 0; i < Math.min(needed, candidates.size()); i++) {
                 selected.add(candidates.get(i));
@@ -77,7 +72,7 @@ public class HeroDecisionProvider implements DecisionProvider {
         }
         System.out.print("): ");
         String decision = decisions.poll();
-        System.out.println(decision); // 顯示輸入的值
+        System.out.println(decision);
         String[] targetIndices = decision.split(",\\s*");
 
         for (int i = 0; i < Math.min(needed, targetIndices.length); i++) {
@@ -90,11 +85,9 @@ public class HeroDecisionProvider implements DecisionProvider {
                     }
                 }
             } catch (NumberFormatException e) {
-                // 忽略無效的索引
             }
         }
 
-        // 如果選擇的目標不足，補充前面的目標
         while (selected.size() < needed && selected.size() < candidates.size()) {
             for (Unit candidate : candidates) {
                 if (!selected.contains(candidate)) {

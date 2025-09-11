@@ -7,9 +7,7 @@ import rpg.units.Unit;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * AI 決策提供者
- */
+
 public class AiDecisionProvider implements DecisionProvider {
     private int seed = 0;
 
@@ -38,8 +36,7 @@ public class AiDecisionProvider implements DecisionProvider {
                     }
                 }
                 System.out.println();
-                seed++; // MP 不足時也要增加 seed
-                // 如果 MP 不足，繼續下一次循環
+                seed++;
             }
         }
     }
@@ -60,7 +57,7 @@ public class AiDecisionProvider implements DecisionProvider {
             }
         }
 
-        seed++; // 選完所有目標後才 +1
+        seed++;
         return selected;
     }
 

@@ -3,14 +3,11 @@ package rpg.states;
 import rpg.battle.Battle;
 import rpg.units.Unit;
 
-/**
- * 正常狀態
- */
+
 public class NormalState implements State {
 
     @Override
     public void onTurnStart(Unit unit, Battle battle) {
-        // 正常狀態下無特殊效果
     }
 
     @Override
@@ -20,12 +17,11 @@ public class NormalState implements State {
 
     @Override
     public int ticksRemaining() {
-        return 0; // 正常狀態永不結束
+        return 0;
     }
 
     @Override
     public void tickDown() {
-        // 正常狀態不需要倒數
     }
 
     @Override

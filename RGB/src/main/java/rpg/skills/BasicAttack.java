@@ -6,9 +6,6 @@ import rpg.targeting.TargetingPolicy;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 普通攻擊
- */
 public class BasicAttack implements Action {
     private TargetingPolicy targetingPolicy = new OneEnemyPolicy();
 

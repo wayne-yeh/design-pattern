@@ -5,9 +5,7 @@ import rpg.states.CheerupState;
 import rpg.states.NormalState;
 import rpg.units.Unit;
 
-/**
- * 鼓舞規則：如果目標角色的當前狀態為受到鼓舞狀態，對目標角色造成 100 點傷害，並將目標角色的狀態恢復成正常狀態
- */
+
 public class CheerupRule implements OnePunchRule {
 
     @Override
@@ -22,7 +20,6 @@ public class CheerupRule implements OnePunchRule {
 
         System.out.println(caster.getDisplayName() + " 對 " + target.getDisplayName() + " 造成 " + damage + " 點傷害。");
 
-        // 將狀態恢復成正常狀態
         target.setState(new NormalState());
         System.out.println(target.getDisplayName() + " 的鼓舞狀態被移除了。");
 

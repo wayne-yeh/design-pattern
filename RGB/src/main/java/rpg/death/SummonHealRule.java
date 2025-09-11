@@ -5,11 +5,8 @@ import rpg.units.Unit;
 import java.util.Map;
 import java.util.HashMap;
 
-/**
- * 召喚治癒規則
- */
+
 public class SummonHealRule implements DeathListener {
-    // 史萊姆 -> 召喚者的映射
     private Map<Unit, Unit> summonRelations = new HashMap<>();
 
     public void addSummonRelation(Unit slime, Unit summoner) {

@@ -23,7 +23,6 @@ java -cp . rpg.Main < test_input.txt
 #### 2. 即時對戰模式（互動式）
 
 ```bash
-java -cp . rpg.RealTimeMain
 # 或
 ./run_interactive.sh
 ```
@@ -31,7 +30,6 @@ java -cp . rpg.RealTimeMain
 #### 3. 互動引導模式
 
 ```bash
-java -cp . rpg.InteractiveMain
 ```
 
 ## 💡 輸入提示說明

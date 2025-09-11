@@ -5,9 +5,6 @@ import rpg.units.Unit;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * 死亡事件總線
- */
 public class DeathBus {
     private List<DeathListener> listeners = new ArrayList<>();
 
