@@ -22,3 +22,4 @@ public class AllUnitsPolicy implements TargetingPolicy {
         return candidates; // 所有角色
     }
 }
+

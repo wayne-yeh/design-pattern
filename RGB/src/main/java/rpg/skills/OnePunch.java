@@ -57,3 +57,4 @@ public class OnePunch implements Skill {
         }
     }
 }
+

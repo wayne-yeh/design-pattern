@@ -23,3 +23,5 @@ public class NAlliesPolicy implements TargetingPolicy {
         return decisionProvider.chooseTargets(caster, candidates, needed);
     }
 }
+
+

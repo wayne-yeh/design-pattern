@@ -45,3 +45,6 @@ public class PetrochemicalState implements State {
         return false; // 石化狀態下無法行動
     }
 }
+
+
+

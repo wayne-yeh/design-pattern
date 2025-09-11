@@ -21,3 +21,6 @@ public class AllEnemiesPolicy implements TargetingPolicy {
         return candidates;
     }
 }
+
+
+

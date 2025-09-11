@@ -17,10 +17,8 @@ public class AiDecisionProvider implements DecisionProvider {
     public Action chooseAction(Unit unit, Battle battle) {
         List<Action> availableActions = new ArrayList<>();
 
-        // 添加普通攻擊
         availableActions.add(new BasicAttack());
 
-        // 添加技能
         availableActions.addAll(unit.getSkills());
 
         while (true) {
@@ -28,11 +26,10 @@ public class AiDecisionProvider implements DecisionProvider {
             Action chosen = availableActions.get(actionIndex);
 
             if (unit.hasEnoughMp(chosen.mpCost())) {
-                seed++; // 只有在成功選擇行動後才增加 seed
+                seed++;
                 return chosen;
             } else {
                 System.out.println("你缺乏 MP，不能進行此行動。");
-                // 重新顯示選項
                 System.out.print("選擇行動：");
                 for (int i = 0; i < availableActions.size(); i++) {
                     System.out.print("(" + i + ") " + availableActions.get(i).name());

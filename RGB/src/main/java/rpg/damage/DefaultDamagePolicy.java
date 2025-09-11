@@ -24,3 +24,4 @@ public class DefaultDamagePolicy implements DamagePolicy {
         return Math.max(0, actualDamage);
     }
 }
+

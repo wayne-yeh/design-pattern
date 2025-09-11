@@ -103,3 +103,4 @@ public class InteractiveHeroDecisionProvider implements DecisionProvider {
         return selected;
     }
 }
+

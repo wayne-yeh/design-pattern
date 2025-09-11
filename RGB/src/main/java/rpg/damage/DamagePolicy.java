@@ -18,3 +18,6 @@ public interface DamagePolicy {
      */
     int compute(int baseDamage, Unit source, Unit target, Battle battle);
 }
+
+
+

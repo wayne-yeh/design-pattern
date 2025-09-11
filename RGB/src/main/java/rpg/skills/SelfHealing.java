@@ -35,3 +35,4 @@ public class SelfHealing implements Skill {
         System.out.println(caster.getDisplayName() + " 恢復了 150 HP。");
     }
 }
+

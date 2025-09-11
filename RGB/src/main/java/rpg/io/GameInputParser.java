@@ -39,38 +39,32 @@ public class GameInputParser {
         System.out.println("1");
         System.out.println("...");
         System.out.println();
-        System.out.println("🎯 現在開始輸入數據：");
+        System.out.println(" 現在開始輸入數據：");
         System.out.println("----------------------------------------");
 
-        // 解析軍隊1
-        System.out.println("⚔️  請輸入第一軍隊數據（英雄軍隊）：");
+        System.out.println("請輸入第一軍隊數據（英雄軍隊）：");
         Troop troop1 = parseTroop(scanner, 1);
-        System.out.println("✅ 第一軍隊解析完成！");
+        System.out.println("第一軍隊解析完成！");
         System.out.println();
 
-        // 解析軍隊2
-        System.out.println("👹 請輸入第二軍隊數據（敵軍）：");
+        System.out.println("請輸入第二軍隊數據（敵軍）：");
         Troop troop2 = parseTroop(scanner, 2);
-        System.out.println("✅ 第二軍隊解析完成！");
+        System.out.println("第二軍隊解析完成！");
         System.out.println();
 
-        // 解析英雄決策
-        System.out.println("🎮 請輸入英雄決策數據（每行一個數字）：");
-        System.out.println("💡 提示：這些數字將用於英雄的行動和目標選擇");
+        System.out.println("請輸入英雄決策數據（每行一個數字）：");
+        System.out.println("提示：這些數字將用於英雄的行動和目標選擇");
         List<String> heroDecisions = parseHeroDecisions(scanner);
-        System.out.println("✅ 英雄決策解析完成！");
+        System.out.println("英雄決策解析完成！");
         System.out.println();
 
-        // 設置英雄決策提供者
         Unit hero = troop1.getHero();
         if (hero != null) {
             hero.setDecisionProvider(new HeroDecisionProvider(heroDecisions));
         }
 
-        // 設置AI決策提供者
         setAiDecisionProviders(troop1, troop2);
 
-        // 創建戰鬥（死亡監聽器已在構造函數中註冊）
         Battle battle = new Battle(troop1, troop2);
 
         return battle;
@@ -79,7 +73,6 @@ public class GameInputParser {
     private static Troop parseTroop(Scanner scanner, int troopId) {
         System.out.println(">> 請輸入軍隊標記開始 (例：#軍隊-" + troopId + "-開始)");
 
-        // 跳過軍隊開始標記
         String startLine = scanner.nextLine();
         System.out.println("   輸入：" + startLine);
         while (!startLine.contains("#軍隊-" + troopId + "-開始")) {
@@ -225,12 +218,10 @@ public class GameInputParser {
     }
 
     private static void setAiDecisionProviders(Troop troop1, Troop troop2) {
-        // 為軍隊1的非英雄角色設置AI
         for (int i = 1; i < troop1.getUnits().size(); i++) {
             troop1.getUnits().get(i).setDecisionProvider(new AiDecisionProvider());
         }
 
-        // 為軍隊2的所有角色設置AI
         for (Unit unit : troop2.getUnits()) {
             unit.setDecisionProvider(new AiDecisionProvider());
         }

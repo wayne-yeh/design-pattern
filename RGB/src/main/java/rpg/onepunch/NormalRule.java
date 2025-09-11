@@ -27,3 +27,4 @@ public class NormalRule implements OnePunchRule {
         }
     }
 }
+

@@ -41,3 +41,4 @@ public class Poison implements Skill {
         System.out.println(target.getDisplayName() + " 中毒了！");
     }
 }
+

@@ -15,7 +15,6 @@ public class InteractiveMain {
             System.out.println("=== 歡迎來到 RPG 對戰遊戲 ===");
             System.out.println();
 
-            // 提示輸入格式
             System.out.println("請按照以下格式輸入遊戲數據：");
             System.out.println("#軍隊-1-開始");
             System.out.println("角色名稱 HP MP STR 技能1 技能2 ...");
@@ -32,14 +31,12 @@ public class InteractiveMain {
             System.out.println("開始輸入數據（輸入完成後按 Ctrl+D (Mac/Linux) 或 Ctrl+Z (Windows)）：");
             System.out.println("----------------------------------------");
 
-            // 解析輸入並創建戰鬥
             Battle battle = GameInputParser.parseInput(scanner);
 
             System.out.println("----------------------------------------");
             System.out.println("數據讀取完成，開始戰鬥！");
             System.out.println();
 
-            // 開始戰鬥
             battle.start();
 
         } catch (Exception e) {
@@ -50,3 +47,4 @@ public class InteractiveMain {
         }
     }
 }
+

@@ -4,9 +4,6 @@ import rpg.units.Unit;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * 軍隊類別
- */
 public class Troop {
     private List<Unit> units;
     private int id; // 1 or 2
@@ -40,7 +37,7 @@ public class Troop {
 
     public Unit getHero() {
         if (id == 1 && !units.isEmpty()) {
-            return units.get(0); // 英雄是第一個軍隊的第一個角色
+            return units.get(0);
         }
         return null;
     }

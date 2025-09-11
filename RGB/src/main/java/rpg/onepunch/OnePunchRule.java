@@ -25,3 +25,4 @@ public interface OnePunchRule {
      */
     void apply(Unit caster, Unit target, Battle battle);
 }
+

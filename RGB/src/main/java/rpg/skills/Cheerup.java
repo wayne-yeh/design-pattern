@@ -52,3 +52,4 @@ public class Cheerup implements Skill {
         }
     }
 }
+

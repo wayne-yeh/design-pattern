@@ -37,3 +37,4 @@ public class BadStateRule implements OnePunchRule {
         }
     }
 }
+

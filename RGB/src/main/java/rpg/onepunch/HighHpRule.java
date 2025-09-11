@@ -26,3 +26,4 @@ public class HighHpRule implements OnePunchRule {
         }
     }
 }
+

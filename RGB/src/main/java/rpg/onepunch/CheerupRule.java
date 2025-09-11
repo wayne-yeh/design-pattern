@@ -32,3 +32,4 @@ public class CheerupRule implements OnePunchRule {
         }
     }
 }
+

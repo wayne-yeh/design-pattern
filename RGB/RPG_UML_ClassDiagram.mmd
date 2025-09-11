@@ -1,0 +1,436 @@
+classDiagram
+    %% 核心戰鬥類別
+    class Battle {
+        -Troop troop1
+        -Troop troop2
+        -Queue~Unit~ turnQueue
+        -DamagePolicy damagePolicy
+        -DeathBus deathBus
+        -CurseTracker curseTracker
+        -SummonHealRule summonHealRule
+        -boolean gameEnded
+        -boolean playerWon
+        +Battle(Troop troop1, Troop troop2)
+        +start() void
+        +step() void
+        +getTroop1() Troop
+        +getTroop2() Troop
+        +getDamagePolicy() DamagePolicy
+        +getDeathBus() DeathBus
+        +getAllUnits() List~Unit~
+        +getEnemiesOf(Unit unit) List~Unit~
+        +getAlliesOf(Unit unit) List~Unit~
+        +isGameEnded() boolean
+        +isPlayerWon() boolean
+    }
+
+    class Troop {
+        -List~Unit~ units
+        -int id
+        +Troop(int id)
+        +addUnit(Unit unit) void
+        +getUnits() List~Unit~
+        +getAliveUnits() List~Unit~
+        +isAnnihilated() boolean
+        +getId() int
+        +getHero() Unit
+        +size() int
+    }
+
+    class Unit {
+        -String name
+        -int maxHp
+        -int currentHp
+        -int maxMp
+        -int currentMp
+        -int strength
+        -State state
+        -List~Action~ skills
+        -DecisionProvider decisionProvider
+        -int troopId
+        +Unit(String name, int hp, int mp, int str, int troopId)
+        +getName() String
+        +getDisplayName() String
+        +getCurrentHp() int
+        +setCurrentHp(int hp) void
+        +getCurrentMp() int
+        +setCurrentMp(int mp) void
+        +getStrength() int
+        +setStrength(int str) void
+        +getState() State
+        +setState(State state) void
+        +getSkills() List~Action~
+        +addSkill(Action skill) void
+        +getDecisionProvider() DecisionProvider
+        +setDecisionProvider(DecisionProvider dp) void
+        +getTroopId() int
+        +isAlive() boolean
+        +isDead() boolean
+        +canAct() boolean
+        +hasEnoughMp(int cost) boolean
+        +consumeMp(int cost) void
+        +heal(int amount) void
+        +takeDamage(int amount) void
+        +tickState() void
+    }
+
+    %% 技能系統接口和實作
+    class Action {
+        <<interface>>
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class Skill {
+        <<interface>>
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class BasicAttack {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class Waterball {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class Fireball {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class Poison {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class Curse {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class Petrochemical {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class SelfHealing {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class SelfExplosion {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class Cheerup {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class Summon {
+        -TargetingPolicy targetingPolicy
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+    }
+
+    class OnePunch {
+        -TargetingPolicy targetingPolicy
+        -List~OnePunchRule~ rules
+        +name() String
+        +mpCost() int
+        +targetingPolicy() TargetingPolicy
+        +execute(Unit caster, List~Unit~ targets, Battle battle) void
+        +addRule(OnePunchRule rule) void
+    }
+
+    %% 狀態系統
+    class State {
+        <<interface>>
+        +onTurnStart(Unit unit, Battle battle) void
+        +onReceiveDamage(Unit unit, int amount, Unit source, Battle battle) int
+        +ticksRemaining() int
+        +tickDown() void
+        +getName() String
+        +canAct() boolean
+    }
+
+    class NormalState {
+        +onTurnStart(Unit unit, Battle battle) void
+        +onReceiveDamage(Unit unit, int amount, Unit source, Battle battle) int
+        +ticksRemaining() int
+        +tickDown() void
+        +getName() String
+        +canAct() boolean
+    }
+
+    class PoisonedState {
+        -int ticksRemaining
+        +PoisonedState()
+        +onTurnStart(Unit unit, Battle battle) void
+        +onReceiveDamage(Unit unit, int amount, Unit source, Battle battle) int
+        +ticksRemaining() int
+        +tickDown() void
+        +getName() String
+        +canAct() boolean
+    }
+
+    class PetrochemicalState {
+        -int ticksRemaining
+        +PetrochemicalState()
+        +onTurnStart(Unit unit, Battle battle) void
+        +onReceiveDamage(Unit unit, int amount, Unit source, Battle battle) int
+        +ticksRemaining() int
+        +tickDown() void
+        +getName() String
+        +canAct() boolean
+    }
+
+    class CheerupState {
+        -int ticksRemaining
+        +CheerupState()
+        +onTurnStart(Unit unit, Battle battle) void
+        +onReceiveDamage(Unit unit, int amount, Unit source, Battle battle) int
+        +ticksRemaining() int
+        +tickDown() void
+        +getName() String
+        +canAct() boolean
+    }
+
+    %% 目標選擇策略
+    class TargetingPolicy {
+        <<interface>>
+        +candidates(Unit caster, Battle battle) List~Unit~
+        +select(Unit caster, List~Unit~ candidates, int needed, DecisionProvider decisionProvider) List~Unit~
+    }
+
+    class OneEnemyPolicy {
+        +candidates(Unit caster, Battle battle) List~Unit~
+        +select(Unit caster, List~Unit~ candidates, int needed, DecisionProvider decisionProvider) List~Unit~
+    }
+
+    class AllEnemiesPolicy {
+        +candidates(Unit caster, Battle battle) List~Unit~
+        +select(Unit caster, List~Unit~ candidates, int needed, DecisionProvider decisionProvider) List~Unit~
+    }
+
+    class SelfPolicy {
+        +candidates(Unit caster, Battle battle) List~Unit~
+        +select(Unit caster, List~Unit~ candidates, int needed, DecisionProvider decisionProvider) List~Unit~
+    }
+
+    class NAlliesPolicy {
+        +candidates(Unit caster, Battle battle) List~Unit~
+        +select(Unit caster, List~Unit~ candidates, int needed, DecisionProvider decisionProvider) List~Unit~
+    }
+
+    class AllUnitsPolicy {
+        +candidates(Unit caster, Battle battle) List~Unit~
+        +select(Unit caster, List~Unit~ candidates, int needed, DecisionProvider decisionProvider) List~Unit~
+    }
+
+    %% 決策提供者
+    class DecisionProvider {
+        <<interface>>
+        +chooseAction(Unit unit, Battle battle) Action
+        +chooseTargets(Unit unit, List~Unit~ candidates, int needed) List~Unit~
+    }
+
+    class AiDecisionProvider {
+        -int seed
+        +chooseAction(Unit unit, Battle battle) Action
+        +chooseTargets(Unit unit, List~Unit~ candidates, int needed) List~Unit~
+        +getSeed() int
+        +setSeed(int seed) void
+    }
+
+    class HeroDecisionProvider {
+        -Queue~String~ decisions
+        +HeroDecisionProvider(List~String~ decisionList)
+        +chooseAction(Unit unit, Battle battle) Action
+        +chooseTargets(Unit unit, List~Unit~ candidates, int needed) List~Unit~
+    }
+
+    class InteractiveHeroDecisionProvider {
+        +chooseAction(Unit unit, Battle battle) Action
+        +chooseTargets(Unit unit, List~Unit~ candidates, int needed) List~Unit~
+    }
+
+    %% 傷害系統
+    class DamagePolicy {
+        <<interface>>
+        +compute(int baseDamage, Unit source, Unit target, Battle battle) int
+    }
+
+    class DefaultDamagePolicy {
+        +compute(int baseDamage, Unit source, Unit target, Battle battle) int
+    }
+
+    %% 死亡事件系統
+    class DeathListener {
+        <<interface>>
+        +onDeath(Unit dead, Unit killer, Battle battle) void
+    }
+
+    class DeathBus {
+        -List~DeathListener~ listeners
+        +subscribe(DeathListener listener) void
+        +unsubscribe(DeathListener listener) void
+        +notifyDeath(Unit dead, Unit killer, Battle battle) void
+    }
+
+    class CurseTracker {
+        +onDeath(Unit dead, Unit killer, Battle battle) void
+    }
+
+    class SummonHealRule {
+        +onDeath(Unit dead, Unit killer, Battle battle) void
+    }
+
+    %% 一拳攻擊規則系統
+    class OnePunchRule {
+        <<interface>>
+        +applies(Unit target, Battle battle) boolean
+        +apply(Unit caster, Unit target, Battle battle) void
+    }
+
+    class NormalRule {
+        +applies(Unit target, Battle battle) boolean
+        +apply(Unit caster, Unit target, Battle battle) void
+    }
+
+    class HighHpRule {
+        +applies(Unit target, Battle battle) boolean
+        +apply(Unit caster, Unit target, Battle battle) void
+    }
+
+    class BadStateRule {
+        +applies(Unit target, Battle battle) boolean
+        +apply(Unit caster, Unit target, Battle battle) void
+    }
+
+    class CheerupRule {
+        +applies(Unit target, Battle battle) boolean
+        +apply(Unit caster, Unit target, Battle battle) void
+    }
+
+    %% 工具類別
+    class GameInputParser {
+        +parseInput(String input) List~String~
+    }
+
+    class Main {
+        +main(String[] args) void
+    }
+
+    class InteractiveMain {
+        +main(String[] args) void
+    }
+
+    class RealTimeMain {
+        +main(String[] args) void
+    }
+
+    %% 關係定義
+    Battle "1" o-- "2" Troop : contains
+    Battle "1" o-- "1" DamagePolicy : uses
+    Battle "1" o-- "1" DeathBus : has
+    Battle "1" o-- "1" CurseTracker : has
+    Battle "1" o-- "1" SummonHealRule : has
+    
+    Troop "1" o-- "*" Unit : contains
+    
+    Unit "1" o-- "1" State : has
+    Unit "1" o-- "*" Action : has skills
+    Unit "1" o-- "1" DecisionProvider : uses
+    
+    %% 技能繼承關係
+    Skill --|> Action : extends
+    BasicAttack ..|> Action : implements
+    Waterball ..|> Skill : implements
+    Fireball ..|> Skill : implements
+    Poison ..|> Skill : implements
+    Curse ..|> Skill : implements
+    Petrochemical ..|> Skill : implements
+    SelfHealing ..|> Skill : implements
+    SelfExplosion ..|> Skill : implements
+    Cheerup ..|> Skill : implements
+    Summon ..|> Skill : implements
+    OnePunch ..|> Skill : implements
+    
+    %% 狀態實作關係
+    NormalState ..|> State : implements
+    PoisonedState ..|> State : implements
+    PetrochemicalState ..|> State : implements
+    CheerupState ..|> State : implements
+    
+    %% 目標策略實作關係
+    OneEnemyPolicy ..|> TargetingPolicy : implements
+    AllEnemiesPolicy ..|> TargetingPolicy : implements
+    SelfPolicy ..|> TargetingPolicy : implements
+    NAlliesPolicy ..|> TargetingPolicy : implements
+    AllUnitsPolicy ..|> TargetingPolicy : implements
+    
+    %% 決策提供者實作關係
+    AiDecisionProvider ..|> DecisionProvider : implements
+    HeroDecisionProvider ..|> DecisionProvider : implements
+    InteractiveHeroDecisionProvider ..|> DecisionProvider : implements
+    
+    %% 傷害策略實作關係
+    DefaultDamagePolicy ..|> DamagePolicy : implements
+    
+    %% 死亡監聽器實作關係
+    CurseTracker ..|> DeathListener : implements
+    SummonHealRule ..|> DeathListener : implements
+    
+    %% 一拳攻擊規則實作關係
+    NormalRule ..|> OnePunchRule : implements
+    HighHpRule ..|> OnePunchRule : implements
+    BadStateRule ..|> OnePunchRule : implements
+    CheerupRule ..|> OnePunchRule : implements
+    
+    %% 技能使用目標策略
+    Action "1" o-- "1" TargetingPolicy : uses
+    
+    %% 一拳攻擊使用規則
+    OnePunch "1" o-- "*" OnePunchRule : uses
+    
+    %% 死亡總線與監聽器
+    DeathBus "1" o-- "*" DeathListener : notifies

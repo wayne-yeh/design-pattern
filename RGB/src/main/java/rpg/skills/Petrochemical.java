@@ -41,3 +41,4 @@ public class Petrochemical implements Skill {
         System.out.println(target.getDisplayName() + " 被石化了！");
     }
 }
+

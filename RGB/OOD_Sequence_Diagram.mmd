@@ -1,0 +1,176 @@
+sequenceDiagram
+    participant Main as Main
+    participant Parser as GameInputParser
+    participant Battle as Battle
+    participant T1 as Troop1
+    participant T2 as Troop2
+    participant Hero as Unit(Hero)
+    participant Enemy as Unit(Enemy)
+    participant HeroDP as HeroDecisionProvider
+    participant AiDP as AiDecisionProvider
+    participant Action as Action(Skill)
+    participant TargetPolicy as TargetingPolicy
+    participant State as State
+    participant DeathBus as DeathBus
+    participant CurseTracker as CurseTracker
+    participant SummonHealRule as SummonHealRule
+    participant DamagePolicy as DamagePolicy
+
+    %% 遊戲初始化階段
+    Note over Main, DamagePolicy: 🎮 遊戲初始化階段
+    Main->>Parser: parseInput(scanner)
+    Parser->>T1: new Troop(1)
+    Parser->>T2: new Troop(2)
+    Parser->>Hero: new Unit(heroData)
+    Parser->>Enemy: new Unit(enemyData)
+    Parser->>HeroDP: new HeroDecisionProvider(decisions)
+    Parser->>AiDP: new AiDecisionProvider()
+    Hero->>HeroDP: setDecisionProvider(heroDP)
+    Enemy->>AiDP: setDecisionProvider(aiDP)
+    T1->>Hero: addUnit(hero)
+    T2->>Enemy: addUnit(enemy)
+    Parser->>Battle: new Battle(troop1, troop2)
+    
+    %% 戰鬥系統初始化
+    Note over Battle, SummonHealRule: 🏗️ 戰鬥系統初始化 (Observer Pattern)
+    Battle->>DeathBus: new DeathBus()
+    Battle->>CurseTracker: new CurseTracker()
+    Battle->>SummonHealRule: new SummonHealRule()
+    Battle->>DeathBus: subscribe(curseTracker)
+    Battle->>DeathBus: subscribe(summonHealRule)
+    Battle->>DamagePolicy: new DefaultDamagePolicy()
+    
+    Main->>Battle: start()
+    
+    %% 主要戰鬥循環
+    Note over Battle, DamagePolicy: ⚔️ 回合制戰鬥循環
+    loop 每個回合直到遊戲結束
+        Battle->>Battle: initializeTurnQueue()
+        Battle->>Hero: poll from turnQueue
+        
+        %% 英雄回合
+        Note over Battle, DamagePolicy: 👑 英雄回合開始
+        Battle->>Hero: toString() [顯示狀態]
+        Battle->>Hero: getState()
+        Hero->>State: onTurnStart(hero, battle)
+        
+        alt 角色未死亡且可行動
+            %% S1: 選擇行動 (Strategy Pattern)
+            Note over Battle, Action: 🎯 S1: 選擇行動 (Strategy Pattern)
+            Battle->>Battle: chooseAction(hero)
+            Battle->>Hero: getSkills()
+            Battle->>Hero: getDecisionProvider()
+            Hero->>HeroDP: chooseAction(hero, battle)
+            HeroDP->>Action: 選擇技能或普通攻擊
+            
+            %% S2: 選擇目標 (Strategy Pattern)
+            Note over Battle, TargetPolicy: 🎯 S2: 選擇目標 (Strategy Pattern)
+            Battle->>Battle: chooseTargets(hero, action)
+            Battle->>Action: targetingPolicy()
+            Action->>TargetPolicy: candidates(hero, battle)
+            TargetPolicy->>Battle: getEnemiesOf(hero) 或其他候選邏輯
+            Battle->>TargetPolicy: select(hero, candidates, needed, decisionProvider)
+            TargetPolicy->>HeroDP: chooseTargets(hero, candidates, needed)
+            
+            %% S3: 執行行動
+            Note over Battle, DamagePolicy: ⚡ S3: 執行行動
+            Battle->>Hero: consumeMp(action.mpCost())
+            Battle->>Action: execute(hero, targets, battle)
+            
+            alt 攻擊類技能
+                Action->>DamagePolicy: compute(damage, caster, target, battle)
+                DamagePolicy->>Enemy: getState()
+                Enemy->>State: onReceiveDamage(enemy, damage, hero, battle)
+                Action->>Enemy: takeDamage(finalDamage)
+                
+                alt 目標死亡
+                    Action->>DeathBus: notifyDeath(enemy, hero, battle)
+                    DeathBus->>CurseTracker: onDeath(enemy, hero, battle)
+                    DeathBus->>SummonHealRule: onDeath(enemy, hero, battle)
+                end
+                
+            else 狀態類技能 (State Pattern)
+                Action->>Enemy: setState(newState)
+                Enemy->>State: 設置新狀態
+                
+            else 召喚技能
+                Action->>Battle: 創建新的史萊姆單位
+                Action->>SummonHealRule: addSummonRelation(slime, hero)
+                
+            else OnePunch技能 (Chain of Responsibility)
+                Note over Action, DamagePolicy: 🥊 OnePunch (Chain of Responsibility)
+                loop 遍歷規則鏈
+                    Action->>Action: rules.applies(target, battle)
+                    alt 規則適用
+                        Action->>Action: rule.apply(caster, target, battle)
+                        break
+                    end
+                end
+            end
+            
+            Battle->>Battle: checkGameEnd()
+            Battle->>Battle: updateStates()
+        end
+        
+        %% AI 敵人回合
+        Note over Battle, DamagePolicy: 🤖 AI 敵人回合
+        Battle->>Enemy: poll from turnQueue
+        Battle->>Enemy: toString() [顯示狀態]
+        Battle->>Enemy: getState()
+        Enemy->>State: onTurnStart(enemy, battle)
+        
+        alt 角色未死亡且可行動
+            %% AI 決策 (Strategy Pattern)
+            Note over Battle, Action: 🧠 AI 決策系統 (Strategy Pattern)
+            Battle->>Battle: chooseAction(enemy)
+            Battle->>Enemy: getDecisionProvider()
+            Enemy->>AiDP: chooseAction(enemy, battle)
+            Note over AiDP: seed % 行動數量
+            AiDP->>Action: 根據 AI 算法選擇行動
+            
+            Battle->>Battle: chooseTargets(enemy, action)
+            Battle->>Action: targetingPolicy()
+            Action->>TargetPolicy: candidates(enemy, battle)
+            Battle->>TargetPolicy: select(enemy, candidates, needed, aiDP)
+            TargetPolicy->>AiDP: chooseTargets(enemy, candidates, needed)
+            Note over AiDP: (seed+i) % 候選數量
+            
+            Battle->>Enemy: consumeMp(action.mpCost())
+            Battle->>Action: execute(enemy, targets, battle)
+            
+            %% 類似的執行邏輯...
+            alt 攻擊英雄
+                Action->>DamagePolicy: compute(damage, enemy, hero, battle)
+                Action->>Hero: takeDamage(damage)
+                
+                alt 英雄死亡
+                    Action->>DeathBus: notifyDeath(hero, enemy, battle)
+                    Battle->>Battle: checkGameEnd() [遊戲結束]
+                end
+            end
+            
+            Battle->>Battle: checkGameEnd()
+            Battle->>Battle: updateStates()
+        end
+        
+        %% 狀態更新
+        Note over Battle, State: 🔄 狀態更新 (State Pattern)
+        loop 所有存活角色
+            Battle->>Hero: tickState()
+            Hero->>State: tickDown()
+            alt 狀態到期
+                Hero->>State: 恢復到 NormalState
+            end
+        end
+    end
+    
+    %% 遊戲結束
+    Note over Battle, Main: 🏁 遊戲結束
+    alt 英雄獲勝
+        Battle->>Main: "你獲勝了！"
+    else 英雄失敗
+        Battle->>Main: "你失敗了！"
+    end
+
+    %% 設計模式標註
+    Note over Main, DamagePolicy: 🏗️ 使用的設計模式:<br/>Strategy Pattern: DecisionProvider, TargetingPolicy, State, DamagePolicy<br/>Observer Pattern: DeathBus, DeathListener<br/>Chain of Responsibility: OnePunchRule<br/>Factory Method: Skill creation<br/>Template Method: Action execution flow

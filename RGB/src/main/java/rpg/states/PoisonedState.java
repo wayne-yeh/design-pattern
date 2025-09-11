@@ -49,3 +49,6 @@ public class PoisonedState implements State {
         return true; // 中毒狀態下仍可行動（如果沒死）
     }
 }
+
+
+

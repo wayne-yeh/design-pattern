@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.LinkedList;
 
-/**
- * 戰鬥類別
- */
 public class Battle {
     private Troop troop1;
     private Troop troop2;
@@ -39,7 +36,6 @@ public class Battle {
         this.gameEnded = false;
         this.playerWon = false;
 
-        // 註冊死亡監聽器
         this.deathBus.subscribe(curseTracker);
         this.deathBus.subscribe(summonHealRule);
 
@@ -47,7 +43,6 @@ public class Battle {
     }
 
     private void initializeTurnQueue() {
-        // 按照 (u1,1, u1,2, ..., u1,n1, u2,1, u2,2, ..., u2,n2) 順序
         for (Unit unit : troop1.getUnits()) {
             if (unit.isAlive()) {
                 turnQueue.offer(unit);
@@ -82,14 +77,12 @@ public class Battle {
         Unit currentUnit = turnQueue.poll();
 
         if (currentUnit.isDead()) {
-            // 重新初始化回合隊列
             initializeTurnQueue();
             return;
         }
 
         System.out.println("輪到 " + currentUnit + "。");
 
-        // 狀態效果處理
         currentUnit.getState().onTurnStart(currentUnit, this);
 
         if (currentUnit.isDead()) {
@@ -100,7 +93,6 @@ public class Battle {
         }
 
         if (!currentUnit.canAct()) {
-            // 被石化等狀態，跳過回合
             initializeTurnQueue();
             return;
         }
@@ -119,13 +111,10 @@ public class Battle {
         currentUnit.consumeMp(action.mpCost());
         action.execute(currentUnit, targets, this);
 
-        // 檢查遊戲是否結束
         checkGameEnd();
 
-        // 更新狀態倒數
         updateStates();
 
-        // 重新初始化回合隊列
         if (!gameEnded) {
             initializeTurnQueue();
         }

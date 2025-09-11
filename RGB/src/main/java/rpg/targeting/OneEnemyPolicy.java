@@ -20,3 +20,6 @@ public class OneEnemyPolicy implements TargetingPolicy {
         return decisionProvider.chooseTargets(caster, candidates, needed);
     }
 }
+
+
+

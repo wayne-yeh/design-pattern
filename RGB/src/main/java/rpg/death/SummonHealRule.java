@@ -26,3 +26,4 @@ public class SummonHealRule implements DeathListener {
         }
     }
 }
+

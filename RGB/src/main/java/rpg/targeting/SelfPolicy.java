@@ -21,3 +21,4 @@ public class SelfPolicy implements TargetingPolicy {
         return candidates; // 直接返回自己
     }
 }
+

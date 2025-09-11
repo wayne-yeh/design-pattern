@@ -10,3 +10,6 @@ fi
 echo "啟動 RPG 遊戲..."
 echo "請輸入遊戲數據或使用 Ctrl+D 結束輸入："
 java -cp . rpg.Main
+
+
+

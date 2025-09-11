@@ -7,11 +7,9 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 
-/**
- * 詛咒追蹤器
- */
+
 public class CurseTracker implements DeathListener {
-    // 被詛咒者 -> 施咒者集合
+
     private Map<Unit, Set<Unit>> curses = new HashMap<>();
 
     public void addCurse(Unit target, Unit caster) {
@@ -40,3 +38,4 @@ public class CurseTracker implements DeathListener {
         return cursers != null && cursers.contains(caster);
     }
 }
+
