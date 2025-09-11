@@ -6,9 +6,7 @@ import rpg.targeting.TargetingPolicy;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 火球技能
- */
+
 public class Fireball implements Skill {
     private TargetingPolicy targetingPolicy = new AllEnemiesPolicy();
 
@@ -33,7 +31,6 @@ public class Fireball implements Skill {
             return;
         }
 
-        // 構建目標名稱列表
         StringBuilder targetNames = new StringBuilder();
         for (int i = 0; i < targets.size(); i++) {
             targetNames.append(targets.get(i).getDisplayName());
@@ -44,7 +41,6 @@ public class Fireball implements Skill {
 
         System.out.println(caster.getDisplayName() + " 對 " + targetNames + " 使用了 火球。");
 
-        // 按照順序處理每個目標
         for (Unit target : targets) {
             int damage = battle.getDamagePolicy().compute(50, caster, target, battle);
             target.takeDamage(damage);

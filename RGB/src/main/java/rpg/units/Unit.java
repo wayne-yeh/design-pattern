@@ -7,9 +7,6 @@ import rpg.states.NormalState;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * 角色類別
- */
 public class Unit {
     private String name;
     private int maxHp;
@@ -103,7 +100,6 @@ public class Unit {
         return troopId;
     }
 
-    // State operations
     public boolean isAlive() {
         return currentHp > 0;
     }
@@ -116,7 +112,6 @@ public class Unit {
         return isAlive() && state.canAct();
     }
 
-    // MP operations
     public boolean hasEnoughMp(int cost) {
         return currentMp >= cost;
     }
@@ -125,7 +120,6 @@ public class Unit {
         currentMp = Math.max(0, currentMp - cost);
     }
 
-    // HP operations
     public void heal(int amount) {
         currentHp = Math.min(maxHp, currentHp + amount);
     }
@@ -134,7 +128,6 @@ public class Unit {
         currentHp = Math.max(0, currentHp - amount);
     }
 
-    // State operations
     public void tickState() {
         if (state != null) {
             state.tickDown();

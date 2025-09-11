@@ -4,9 +4,7 @@ import rpg.battle.Battle;
 import rpg.states.NormalState;
 import rpg.units.Unit;
 
-/**
- * 正常規則：如果目標角色的當前狀態為正常狀態，對目標角色造成 100 點傷害
- */
+
 public class NormalRule implements OnePunchRule {
 
     @Override

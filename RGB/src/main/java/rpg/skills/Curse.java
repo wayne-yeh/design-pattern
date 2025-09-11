@@ -7,9 +7,7 @@ import rpg.targeting.TargetingPolicy;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 詛咒技能
- */
+
 public class Curse implements Skill {
     private TargetingPolicy targetingPolicy = new OneEnemyPolicy();
 
@@ -37,7 +35,6 @@ public class Curse implements Skill {
         Unit target = targets.get(0);
         System.out.println(caster.getDisplayName() + " 對 " + target.getDisplayName() + " 使用了 詛咒。");
 
-        // 註冊詛咒關係
         battle.getCurseTracker().addCurse(target, caster);
         System.out.println(target.getDisplayName() + " 被詛咒了！");
     }

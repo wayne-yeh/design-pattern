@@ -3,19 +3,16 @@ package rpg.states;
 import rpg.battle.Battle;
 import rpg.units.Unit;
 
-/**
- * 中毒狀態
- */
+
 public class PoisonedState implements State {
     private int ticksRemaining;
 
     public PoisonedState() {
-        this.ticksRemaining = 3; // 三回合（含當前回合）
+        this.ticksRemaining = 3;
     }
 
     @Override
     public void onTurnStart(Unit unit, Battle battle) {
-        // 輪到此角色時，HP 減少 30
         unit.takeDamage(30);
         if (unit.isDead()) {
             System.out.println(unit.getDisplayName() + " 因中毒而死亡。");
@@ -46,7 +43,7 @@ public class PoisonedState implements State {
 
     @Override
     public boolean canAct() {
-        return true; // 中毒狀態下仍可行動（如果沒死）
+        return true;
     }
 }
 

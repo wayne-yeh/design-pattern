@@ -7,9 +7,7 @@ import rpg.targeting.TargetingPolicy;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 鼓舞技能
- */
+
 public class Cheerup implements Skill {
     private TargetingPolicy targetingPolicy = new NAlliesPolicy();
 

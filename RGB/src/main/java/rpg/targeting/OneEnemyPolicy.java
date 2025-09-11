@@ -5,9 +5,6 @@ import rpg.core.DecisionProvider;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 單一敵軍目標策略
- */
 public class OneEnemyPolicy implements TargetingPolicy {
 
     @Override

@@ -3,9 +3,7 @@ package rpg.onepunch;
 import rpg.battle.Battle;
 import rpg.units.Unit;
 
-/**
- * 高血量規則：如果目標角色的生命值 ≥ 500，直接對目標角色造成 300 點傷害
- */
+
 public class HighHpRule implements OnePunchRule {
 
     @Override

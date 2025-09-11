@@ -7,9 +7,7 @@ import rpg.targeting.TargetingPolicy;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 下毒技能
- */
+
 public class Poison implements Skill {
     private TargetingPolicy targetingPolicy = new OneEnemyPolicy();
 

@@ -6,9 +6,7 @@ import rpg.targeting.TargetingPolicy;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 水球技能
- */
+
 public class Waterball implements Skill {
     private TargetingPolicy targetingPolicy = new OneEnemyPolicy();
 

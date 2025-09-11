@@ -7,9 +7,6 @@ import rpg.targeting.TargetingPolicy;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 石化技能
- */
 public class Petrochemical implements Skill {
     private TargetingPolicy targetingPolicy = new OneEnemyPolicy();
 

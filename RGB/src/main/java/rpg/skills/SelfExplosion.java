@@ -6,9 +6,7 @@ import rpg.targeting.TargetingPolicy;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 自爆技能
- */
+
 public class SelfExplosion implements Skill {
     private TargetingPolicy targetingPolicy = new AllUnitsPolicy();
 

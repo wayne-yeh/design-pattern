@@ -6,9 +6,6 @@ import rpg.targeting.TargetingPolicy;
 import rpg.units.Unit;
 import java.util.List;
 
-/**
- * 自我治療技能
- */
 public class SelfHealing implements Skill {
     private TargetingPolicy targetingPolicy = new SelfPolicy();
 
